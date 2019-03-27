@@ -1,0 +1,44 @@
+.root{
+    -style1-bg: #363636;
+    -style1-btn: #cccccc;
+    -style1-pbtn: #42f480;
+    -style1-hbtn: #898989;
+    -style1-lt: white;
+    -style1-dt: black; 
+    
+    /* lyst tema
+    -style1-bg: #cccccc;
+    -style1-btn: #363636;
+    -style1-pbtn: #42f480;
+    -style1-hbtn: #898989;
+    -style1-lt: black;
+    -style1-dt: white;*/
+    
+}
+.root {    
+    -fx-background-color: -style1-bg;
+}
+#button{
+    -fx-background-color: -style1-btn;  
+    -fx-text-fill: -style1-dt;
+}
+#button:pressed:hover{
+    -fx-background-color: -style1-pbtn;
+}
+#button:hover{
+    -fx-background-color: -style1-hbtn;
+}
+#button:focused{
+    -fx-background-color: -style1-hbtn;
+}
+#username, #password{
+    -fx-background-color: rgba(0,0,0,0.2);
+    -fx-prompt-text-fill: -style1-lt;
+    -fx-text-fill: -style1-lt;
+}
+#username:focused,#password:focused{
+    -fx-prompt-text-fill: transparent;
+}
+#login{
+    -fx-text-fill: -style1-lt;
+}
