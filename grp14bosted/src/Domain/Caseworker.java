@@ -10,11 +10,11 @@ public class Caseworker
 
     public Caseworker(String name, String email, String password, String phoneNumber, String iD, Ward primaryWard, ArrayList<Ward> secondaryWards) 
     {
+        this.iD = iD;
         this.name = name;
         this.email = email;
         this.password = password;
-        this.phoneNumber = phoneNumber;
-        this.iD = iD;
+        this.phoneNumber = phoneNumber;      
         this.primaryWard = primaryWard;
         this.secondaryWards = secondaryWards;
     }
@@ -35,8 +35,5 @@ public class Caseworker
     
     public String getID(){
         return this.iD;
-    }
-    
-    
-    
+    }      
 }
