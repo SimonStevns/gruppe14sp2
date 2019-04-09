@@ -1,13 +1,13 @@
 package Domain;
 
-public class Pedagogue 
+public class Privileges 
 {
     //Atributes
     int foo = 0;
     
     //Constructors
 
-    public Pedagogue() 
+    public Privileges() 
     {
         
     }

@@ -2,13 +2,13 @@ package Domain;
 
 import java.util.ArrayList;
 
-public class Caseworker 
+public class User 
 {
     private String name, phoneNumber, password, email, iD;
     private Ward primaryWard;
     private ArrayList<Ward> secondaryWards;
 
-    public Caseworker(String name, String email, String password, String phoneNumber, String iD, Ward primaryWard, ArrayList<Ward> secondaryWards) 
+    public User(String name, String email, String password, String phoneNumber, String iD, Ward primaryWard, ArrayList<Ward> secondaryWards) 
     {
         this.iD = iD;
         this.name = name;
