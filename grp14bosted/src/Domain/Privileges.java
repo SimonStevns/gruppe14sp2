@@ -1,18 +1,18 @@
 package Domain;
 
+import java.util.HashMap;
+
 public class Privileges 
 {
-    //Atributes
-    int foo = 0;
-    
-    //Constructors
-
+    private HashMap<String, Boolean> privileges;
     public Privileges() 
     {
         
     }
 
-    //Methods
-
-    
+//    public boolean hasPrivilege(String privilege){
+//        if(privilege != null){
+//            
+//        }
+//    }
 }

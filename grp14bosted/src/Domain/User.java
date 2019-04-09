@@ -1,16 +1,19 @@
 package Domain;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class User 
 {
-    private String name, phoneNumber, password, email, iD;
+    private String name, phoneNumber, password, email;
+    private Privileges priv;
+    private UUID id;
     private Ward primaryWard;
     private ArrayList<Ward> secondaryWards;
 
-    public User(String name, String email, String password, String phoneNumber, String iD, Ward primaryWard, ArrayList<Ward> secondaryWards) 
+    public User(UUID iD, Privileges priv, String name, String email, String password, String phoneNumber, Ward primaryWard, ArrayList<Ward> secondaryWards) 
     {
-        this.iD = iD;
+        this.id = iD;
         this.name = name;
         this.email = email;
         this.password = password;
@@ -33,7 +36,7 @@ public class User
         return returnList;
     }
     
-    public String getID(){
-        return this.iD;
+    public UUID getID(){
+        return this.id;
     }      
 }
