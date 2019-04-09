@@ -5,12 +5,13 @@ import java.util.UUID;
 public class Resident {
 
     //Attributes
-    private String name, phoneNumber;
+    private String name, phoneNumber, CPR;
     private UUID ID;
 
     //Constructors
-    public Resident(String name, String phoneNumber, UUID ID) {
+    public Resident(String name, String phoneNumber, UUID ID, String CPR) {
         this.ID = ID;
+        this.CPR = CPR;
         this.name = name;
         this.phoneNumber = phoneNumber;
     }
@@ -19,12 +20,16 @@ public class Resident {
     public UUID ID() {
         return UUID.randomUUID();
     }
-    
-    public String getName(){
+
+    public String getName() {
         return this.name;
     }
-    
-    public String phoneNumber(){
+
+    public String phoneNumber() {
         return this.phoneNumber;
+    }
+
+    public String getCPR() {
+        return this.CPR;
     }
 }
