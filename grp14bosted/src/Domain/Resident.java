@@ -9,8 +9,8 @@ public class Resident {
     private UUID ID;
 
     //Constructors
-    public Resident(String name, String phoneNumber, UUID ID, String CPR) {
-        this.ID = ID;
+    public Resident(String name, String phoneNumber, String CPR) {
+        this.ID = UUID.randomUUID();
         this.CPR = CPR;
         this.name = name;
         this.phoneNumber = phoneNumber;
