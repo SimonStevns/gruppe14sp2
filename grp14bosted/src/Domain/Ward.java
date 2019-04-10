@@ -13,6 +13,8 @@ public class Ward {
         this.wardNumber = wardnumber;
         this.description = description;
         this.residenceName = residenceName;
+        this.residents = new ArrayList<>();
+        this.users = new ArrayList<>();
     }
 
     public boolean addResident(Resident resident) {
@@ -38,9 +40,9 @@ public class Ward {
     public int getWardNumber() {
         return this.wardNumber;
     }
-
+    
     @Override
-    public String toString() {
-        return this.description;
+    public String toString(){
+        return "Afdelling nummer: " + this.wardNumber + " beboer: " + this.residents.size() + " medarbejderer: " + this.users.size();
     }
 }
