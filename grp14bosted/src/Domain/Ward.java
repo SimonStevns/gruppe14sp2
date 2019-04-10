@@ -6,12 +6,13 @@ public class Ward {
 
     private ArrayList<Resident> residents;
     private ArrayList<User> users;
-    private String description;
+    private String description, residenceName;
     private int wardNumber;
 
-    public Ward(int wardnumber, String description) {
+    public Ward(int wardnumber, String description, String residenceName) {
         this.wardNumber = wardnumber;
         this.description = description;
+        this.residenceName = residenceName;
     }
 
     public boolean addResident(Resident resident) {
@@ -36,5 +37,10 @@ public class Ward {
 
     public int getWardNumber() {
         return this.wardNumber;
+    }
+
+    @Override
+    public String toString() {
+        return this.description;
     }
 }

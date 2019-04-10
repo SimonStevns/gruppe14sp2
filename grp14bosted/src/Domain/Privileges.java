@@ -2,17 +2,29 @@ package Domain;
 
 import java.util.HashMap;
 
-public class Privileges 
-{
-    private HashMap<String, Boolean> privileges;
-    public Privileges() 
-    {
-        
+enum Privilege {
+
+    VIEWALLDIARYS, VIEWOWNDIARYS, FINDJOURNAL, WRITEDIARY, DRUGDISTRIBUTION
+}
+
+public class Privileges {
+
+    private HashMap<Privilege, Boolean> privileges;
+
+    public Privileges(boolean[] bolPrivArray) {
+
+        if (bolPrivArray.length == Privilege.values().length) {
+
+            Privilege[] privArray = Privilege.values();
+
+            for (int i = 0; i < bolPrivArray.length; i++) {
+                privileges.put(privArray[i], bolPrivArray[i]);
+            }
+        }
     }
 
-//    public boolean hasPrivilege(String privilege){
-//        if(privilege != null){
-//            
-//        }
-//    }
+    public boolean hasPrivlege(Privilege priv) {
+        return privileges.get(priv);
+    }
+
 }
