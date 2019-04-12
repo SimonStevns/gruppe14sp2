@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr14bosted.MainFXMLController">
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr14bosted.MainFXMLController">
    <children>
       <SplitPane fx:id="splitPane" dividerPositions="0.5" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -25,7 +25,6 @@
                         <ListView layoutX="231.0" layoutY="174.0" prefHeight="329.0" prefWidth="213.0" />
                         <Button fx:id="buttonWard" mnemonicParsing="false" text="Afdeling" />
                         <ListView layoutY="173.0" prefHeight="329.0" prefWidth="200.0" />
-                        <ListView layoutX="213.0" layoutY="19.0" />
                      </children>
                   </Pane>
                </children>
