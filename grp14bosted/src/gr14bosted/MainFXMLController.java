@@ -8,6 +8,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
@@ -21,9 +22,18 @@ public class MainFXMLController implements Initializable {
     @FXML
     private AnchorPane wardMenu;
     
+    @FXML
+    private AnchorPane root;
+    @FXML
+    private SplitPane splitPane;
+
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        
+        splitPane.lookupAll(".split-pane-divider").stream()
+            .forEach(div ->  div.setMouseTransparent(true));
 
         buttonRead.setOnAction((ActionEvent e) -> {
             paneMedicine.setOpacity(0);
