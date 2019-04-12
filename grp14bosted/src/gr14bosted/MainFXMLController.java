@@ -14,35 +14,28 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 public class MainFXMLController implements Initializable {
-    
+
     @FXML
     private Pane paneDiary, paneWrite, paneRead, paneMedicine;
     @FXML
     private Button buttonWard, buttonMedicine, buttonWrite, buttonRead, buttonSubmit;
     @FXML
     private AnchorPane wardMenu;
-    
-    @FXML
-    private AnchorPane root;
     @FXML
     private SplitPane splitPane;
-
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        
+
         splitPane.lookupAll(".split-pane-divider").stream()
-            .forEach(div ->  div.setMouseTransparent(true));
+                .forEach(div -> div.setMouseTransparent(true));
 
         buttonRead.setOnAction((ActionEvent e) -> {
-            paneMedicine.setOpacity(0);
-            paneMedicine.setDisable(true);
-            paneDiary.setOpacity(0);
-            paneDiary.setDisable(true);
+            paneMedicine.setVisible(false);
+            paneDiary.setVisible(false);
             System.out.println("read");
-            paneRead.setOpacity(1);
-            paneRead.setDisable(false);
+            paneRead.setVisible(true);
         });
         buttonWrite.setOnAction((ActionEvent e) -> {
             paneDiary.setVisible(false);
@@ -51,13 +44,10 @@ public class MainFXMLController implements Initializable {
             paneWrite.setVisible(true);
         });
         buttonMedicine.setOnAction((ActionEvent e) -> {
-            paneDiary.setOpacity(0);
-            paneDiary.setDisable(true);
-            paneRead.setOpacity(0);
-            paneRead.setDisable(true);
+            paneDiary.setVisible(false);
+            paneRead.setVisible(false);
             System.out.println("checkMedicine");
-            paneMedicine.setOpacity(1);
-            paneMedicine.setDisable(false);
+            paneMedicine.setVisible(true);
         });
         buttonWard.setOnAction((ActionEvent e) -> {
             //to do
@@ -66,13 +56,11 @@ public class MainFXMLController implements Initializable {
         buttonSubmit.setOnAction((ActionEvent e) -> {
             //to do
         });
-        
     }
-    
     public void animWardMenu() {
-        TranslateTransition tt = new TranslateTransition(Duration.millis(1000d), wardMenu);
+        TranslateTransition tt = new TranslateTransition(Duration.millis(250d), wardMenu);
         if (wardMenu.getTranslateX() == 0) {
-            tt.setByX(200);
+            tt.setByX(56);
             tt.setCycleCount(1);
             tt.setAutoReverse(false);
             tt.play();
@@ -80,7 +68,7 @@ public class MainFXMLController implements Initializable {
             tt.setByX(-wardMenu.getTranslateX());
             tt.setCycleCount(1);
             tt.setAutoReverse(false);
-            tt.setDuration(Duration.millis(1000d));
+            tt.setDuration(Duration.millis(250d));
             tt.play();
         }
     }
