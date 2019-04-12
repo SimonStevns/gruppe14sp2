@@ -1,4 +1,3 @@
-
 package gr14bosted;
 
 import javafx.application.Application;
@@ -13,7 +12,7 @@ public class Gr14bosted extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("FXML.fxml"));
-        
+
         Scene scene = new Scene(root);
 
         String css = Gr14bosted.class.getResource("stylesheet.css").toExternalForm();
