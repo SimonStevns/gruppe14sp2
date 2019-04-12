@@ -11,9 +11,9 @@ public class User
     private Ward primaryWard;
     private ArrayList<Ward> secondaryWards;
 
-    public User(UUID iD, Privileges priv, String name, String email, String password, String phoneNumber, Ward primaryWard, ArrayList<Ward> secondaryWards) 
+    public User(Privileges priv, String name, String email, String password, String phoneNumber, Ward primaryWard, ArrayList<Ward> secondaryWards) 
     {
-        this.id = iD;
+        this.id = UUID.randomUUID();
         this.name = name;
         this.email = email;
         this.password = password;
