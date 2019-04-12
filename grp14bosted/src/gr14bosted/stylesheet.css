@@ -5,7 +5,7 @@
     -style1-hbtn: #898989;
     -style1-lt: white;
     -style1-dt: black; 
-    
+
     /* lyst tema
     -style1-bg: #cccccc;
     -style1-btn: #363636;
@@ -13,7 +13,7 @@
     -style1-hbtn: #898989;
     -style1-lt: black;
     -style1-dt: white;*/
-    
+
 }
 .root {    
     -fx-background-color: -style1-bg;

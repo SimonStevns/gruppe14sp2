@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr14bosted.MainFXMLController">
+   <children>
+      <SplitPane dividerPositions="0.5" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <Pane>
+                     <children>
+                        <TextField layoutY="138.0" prefHeight="25.0" prefWidth="200.0" />
+                        <ListView layoutX="231.0" layoutY="174.0" prefHeight="329.0" prefWidth="213.0" />
+                        <Button fx:id="buttonWard" mnemonicParsing="false" text="Afdeling" />
+                        <ListView layoutY="173.0" prefHeight="329.0" prefWidth="200.0" />
+                     </children>
+                  </Pane>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <StackPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Pane fx:id="paneRead" prefWidth="500.0" visible="false">
+                           <children>
+                              <Label text="Read Diary Temp Label" />
+                              <ListView prefHeight="600.0" prefWidth="446.0" />
+                           </children>
+                        </Pane>
+                        <Pane fx:id="paneWrite" visible="false">
+                           <children>
+                              <ChoiceBox layoutX="14.0" layoutY="80.0" prefWidth="150.0" />
+                              <DatePicker layoutX="241.0" layoutY="172.0" />
+                              <Label layoutX="76.0" layoutY="44.0" text="Skriv" />
+                              <TextArea layoutX="27.0" layoutY="126.0" prefHeight="406.0" prefWidth="200.0" />
+                              <CheckBox layoutX="275.0" layoutY="363.0" mnemonicParsing="false" text="CheckBox" />
+                              <Button fx:id="buttonSubmit" layoutX="311.0" layoutY="507.0" mnemonicParsing="false" text="Skriv dagbog" />
+                           </children>
+                        </Pane>
+                        <Pane fx:id="paneDiary">
+                           <children>
+                              <Button fx:id="buttonRead" layoutX="184.0" layoutY="188.0" mnemonicParsing="false" text="Læs dagbog" />
+                              <Button fx:id="buttonWrite" layoutX="174.0" layoutY="288.0" mnemonicParsing="false" text="Skriv ny dagbog" />
+                           </children>
+                        </Pane>
+                     </children>
+                  </StackPane>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+      <AnchorPane fx:id="wardMenu" layoutX="-200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="26.0">
+         <children>
+            <ListView AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <Label text="Label">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
