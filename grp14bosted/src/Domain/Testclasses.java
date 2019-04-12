@@ -1,6 +1,10 @@
 package Domain;
 
 import java.util.ArrayList;
+import Persistens.Connect;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 
 public class Testclasses {
 
@@ -30,6 +34,19 @@ public class Testclasses {
         r.addWard(w2);
         
         System.out.println(r.toString());
+        
+        Connect con = new Connect(Connect.BOSTED_URL,"root","");
+        con.openConnection();
+        try {
+            ResultSet rs = con.query("SELECT * FROM test");
+            while (rs.next()) {                
+                System.out.println(rs.getInt("tal"));
+            }
+            
+                    } catch (SQLException ex) {
+            System.out.println("ups");
+        }
+        con.closeConnection();
     }
     
 }
