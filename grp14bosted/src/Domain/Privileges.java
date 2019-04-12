@@ -1,18 +1,30 @@
 package Domain;
 
-public class Privileges 
-{
-    //Atributes
-    int foo = 0;
-    
-    //Constructors
+import java.util.HashMap;
 
-    public Privileges() 
-    {
-        
+enum Privilege {
+
+    VIEWALLDIARYS, VIEWOWNDIARYS, FINDJOURNAL, WRITEDIARY, DRUGDISTRIBUTION, ADMIN
+}
+
+public class Privileges {
+
+    private HashMap<Privilege, Boolean> privileges = new HashMap<>();
+
+    public Privileges(boolean[] bolPrivArray) {
+
+        if (bolPrivArray.length == Privilege.values().length) {
+
+            Privilege[] privArray = Privilege.values();
+
+            for (int i = 0; i < bolPrivArray.length; i++) {
+                privileges.put(privArray[i], bolPrivArray[i]);
+            }
+        }
     }
 
-    //Methods
+    public boolean hasPrivlege(Privilege priv) {
+        return privileges.get(priv);
+    }
 
-    
 }
