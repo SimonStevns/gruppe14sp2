@@ -11,6 +11,7 @@ public class Gr14bosted extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        
         Parent root = FXMLLoader.load(getClass().getResource("FXML.fxml"));
 
         Scene scene = new Scene(root);
