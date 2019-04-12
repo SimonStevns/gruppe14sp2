@@ -14,6 +14,7 @@ public class User
     public User(Privileges priv, String name, String email, String password, String phoneNumber, Ward primaryWard, ArrayList<Ward> secondaryWards) 
     {
         this.id = UUID.randomUUID();
+        this.priv = priv;
         this.name = name;
         this.email = email;
         this.password = password;
@@ -38,5 +39,8 @@ public class User
     
     public UUID getID(){
         return this.id;
-    }      
+    }
+    public boolean hasPrivlege(Privilege priv) {
+        return this.priv.hasPrivlege(priv);
+    }
 }

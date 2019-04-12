@@ -17,6 +17,7 @@ public class Testclasses {
         Privileges w1p = new Privileges(b);
         User u1 = new User(w1p, "Simon Stevns","Simon@test.dk", "test", "88888888", w1,new ArrayList<>());
         w1.addUser(u1);
+        System.out.println(u1.hasPrivlege(Privilege.ADMIN));
         
         
         r.addWard(w1);

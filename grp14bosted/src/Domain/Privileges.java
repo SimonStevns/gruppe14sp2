@@ -9,7 +9,7 @@ enum Privilege {
 
 public class Privileges {
 
-    private HashMap<Privilege, Boolean> privileges;
+    private HashMap<Privilege, Boolean> privileges = new HashMap<>();
 
     public Privileges(boolean[] bolPrivArray) {
 
