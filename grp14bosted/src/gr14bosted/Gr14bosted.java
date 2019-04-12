@@ -24,7 +24,6 @@ public class Gr14bosted extends Application {
         stage.initStyle(StageStyle.DECORATED);
         stage.show();
     }
-
     /**
      * @param args the command line arguments
      */
