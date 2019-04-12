@@ -13,19 +13,21 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 public class MainFXMLController implements Initializable {
-
+    
     @FXML
-    private Pane paneDiary, paneWrite, paneRead;
+    private Pane paneDiary, paneWrite, paneRead, paneMedicine;
     @FXML
-    private Button buttonWard, buttonWrite, buttonRead, buttonSubmit;
+    private Button buttonWard, buttonMedicine, buttonWrite, buttonRead, buttonSubmit;
     @FXML
     private AnchorPane wardMenu;
-
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
 
         buttonRead.setOnAction((ActionEvent e) -> {
+            paneMedicine.setOpacity(0);
+            paneMedicine.setDisable(true);
             paneDiary.setOpacity(0);
             paneDiary.setDisable(true);
             System.out.println("read");
@@ -34,8 +36,18 @@ public class MainFXMLController implements Initializable {
         });
         buttonWrite.setOnAction((ActionEvent e) -> {
             paneDiary.setVisible(false);
+            paneMedicine.setVisible(false);
             System.out.println("write");
             paneWrite.setVisible(true);
+        });
+        buttonMedicine.setOnAction((ActionEvent e) -> {
+            paneDiary.setOpacity(0);
+            paneDiary.setDisable(true);
+            paneRead.setOpacity(0);
+            paneRead.setDisable(true);
+            System.out.println("checkMedicine");
+            paneMedicine.setOpacity(1);
+            paneMedicine.setDisable(false);
         });
         buttonWard.setOnAction((ActionEvent e) -> {
             //to do
@@ -44,9 +56,9 @@ public class MainFXMLController implements Initializable {
         buttonSubmit.setOnAction((ActionEvent e) -> {
             //to do
         });
-
+        
     }
-
+    
     public void animWardMenu() {
         TranslateTransition tt = new TranslateTransition(Duration.millis(1000d), wardMenu);
         if (wardMenu.getTranslateX() == 0) {
@@ -54,8 +66,8 @@ public class MainFXMLController implements Initializable {
             tt.setCycleCount(1);
             tt.setAutoReverse(false);
             tt.play();
-        }else{
-        tt.setByX(-wardMenu.getTranslateX());
+        } else {
+            tt.setByX(-wardMenu.getTranslateX());
             tt.setCycleCount(1);
             tt.setAutoReverse(false);
             tt.setDuration(Duration.millis(1000d));
