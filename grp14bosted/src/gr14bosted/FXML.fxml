@@ -21,8 +21,8 @@
                         <Font name="Arial" size="12.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="username" alignment="CENTER" promptText="Username" />
-                  <PasswordField fx:id="password" alignment="CENTER" promptText="Password" />
+                  <TextField fx:id="username" alignment="CENTER" promptText="Username" text="andreas@kvisgaard.biz" />
+                  <PasswordField fx:id="password" alignment="CENTER" promptText="Password" text="storfednab" />
                   <Button fx:id="button" mnemonicParsing="false" prefWidth="1000.0" text="Sign in">
                      <font>
                         <Font name="Arial" size="12.0" />

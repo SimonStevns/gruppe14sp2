@@ -11,8 +11,15 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import Persistens.Connect;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class FXMLController implements Initializable {
 
@@ -21,19 +28,41 @@ public class FXMLController implements Initializable {
     private Button button;
     @FXML
     private VBox vbox;
+    @FXML
+    private TextField username;
+    @FXML
+    private PasswordField password;
+    
+    private Connect con = new Connect(Connect.BOSTED_URL, "root", "");
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
 
         button.setOnAction((ActionEvent e) -> {
-            System.out.println("ok");
             vbox.requestFocus();
+            
             try {
+                con.openConnection();
+                ResultSet rs = con.query("SELECT * FROM users WHERE email = \"" + username.getText() + "\" AND pass = \"" + password.getText() + "\";");
+                if (rs.next()) {                    
+                    System.out.println(rs.getString("prime"));
+                    
+                    goToMain(e);
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            String user = username.getText();
+            
+           /* try {
                 goToMain(e);
             } catch (IOException ex) {
                 System.out.println("something went wrong");
-            }
+            }*/
         });
     }
 
