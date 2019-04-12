@@ -2,6 +2,7 @@ package gr14bosted;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -9,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 
 public class MainFXMLController implements Initializable {
 
@@ -39,17 +41,28 @@ public class MainFXMLController implements Initializable {
         });
         buttonWard.setOnAction((ActionEvent e) -> {
             //to do
-            System.out.println("wardMenu");
-            if (showWardMenu == false) {
-                wardMenu.setLayoutX(0);
-                showWardMenu = true;
-            } else {
-                showWardMenu = false;
-                wardMenu.setLayoutX(-200);
-            }
+
+            animWardMenu();
         });
         buttonSubmit.setOnAction((ActionEvent e) -> {
             //to do
         });
+
+    }
+
+    public void animWardMenu() {
+        TranslateTransition tt = new TranslateTransition(Duration.millis(1000d), wardMenu);
+        if (wardMenu.getTranslateX() == 0) {
+            tt.setByX(200);
+            tt.setCycleCount(1);
+            tt.setAutoReverse(false);
+            tt.play();
+        }else{
+        tt.setByX(-wardMenu.getTranslateX());
+            tt.setCycleCount(1);
+            tt.setAutoReverse(false);
+            tt.setDuration(Duration.millis(1000d));
+            tt.play();
+        }
     }
 }
