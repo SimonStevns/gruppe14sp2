@@ -14,8 +14,6 @@ import javafx.util.Duration;
 
 public class MainFXMLController implements Initializable {
 
-    private boolean showWardMenu = false;
-
     @FXML
     private Pane paneDiary, paneWrite, paneRead;
     @FXML
@@ -41,7 +39,6 @@ public class MainFXMLController implements Initializable {
         });
         buttonWard.setOnAction((ActionEvent e) -> {
             //to do
-
             animWardMenu();
         });
         buttonSubmit.setOnAction((ActionEvent e) -> {
