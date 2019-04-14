@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
+import java.sql.SQLTimeoutException;
 
 public class Connect {
 
@@ -17,22 +18,19 @@ public class Connect {
 
     public Connect(String url, String username, String password) {
         this.JDBC_DRIVER = "com.mysql.jdbc.Driver";
-
         this.URL = url;
         this.USER = username;
         this.PASS = "";
         this.conn = null;
     }
 
-    public void openConnection() {
+    public void openConnection() throws SQLTimeoutException, SQLException{
         try {
             //Register JDBC driver
             Class.forName(JDBC_DRIVER);
             conn = DriverManager.getConnection(URL, USER, PASS);
-
-        } catch (Exception e) {
-            //Handle errors for JDBC
-            e.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -48,6 +46,7 @@ public class Connect {
 
     public ResultSet query(String sqlQuery) throws SQLException {
         Statement stmt = conn.createStatement();
+        
         return stmt.executeQuery(sqlQuery);
     }
 }

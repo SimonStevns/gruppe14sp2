@@ -1,5 +1,7 @@
 package gr14bosted;
 
+import Domain.User;
+import Domain.Ward;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.animation.TranslateTransition;
@@ -24,6 +26,9 @@ public class MainFXMLController implements Initializable {
     @FXML
     private SplitPane splitPane;
 
+    private User user = null;
+    private Ward currentWard = null;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -37,12 +42,14 @@ public class MainFXMLController implements Initializable {
             System.out.println("read");
             paneRead.setVisible(true);
         });
+
         buttonWrite.setOnAction((ActionEvent e) -> {
             paneDiary.setVisible(false);
             paneMedicine.setVisible(false);
             System.out.println("write");
             paneWrite.setVisible(true);
         });
+
         buttonMedicine.setOnAction((ActionEvent e) -> {
             paneDiary.setVisible(false);
             paneRead.setVisible(false);
@@ -53,10 +60,12 @@ public class MainFXMLController implements Initializable {
             //to do
             animWardMenu();
         });
+
         buttonSubmit.setOnAction((ActionEvent e) -> {
             //to do
         });
     }
+
     public void animWardMenu() {
         TranslateTransition tt = new TranslateTransition(Duration.millis(250d), wardMenu);
         if (wardMenu.getTranslateX() == 0) {
@@ -71,5 +80,13 @@ public class MainFXMLController implements Initializable {
             tt.setDuration(Duration.millis(250d));
             tt.play();
         }
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setCurrentWard(Ward ward) {
+        this.currentWard = ward;
     }
 }
