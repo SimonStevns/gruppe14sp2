@@ -1,13 +1,19 @@
 package gr14bosted;
 
+import Domain.Facade;
+import Domain.User;
+import Domain.Ward;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.animation.TranslateTransition;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -23,6 +29,13 @@ public class MainFXMLController implements Initializable {
     private AnchorPane wardMenu;
     @FXML
     private SplitPane splitPane;
+    @FXML
+    private ListView residentsLV;
+
+    private ObservableList residents = FXCollections.observableArrayList();
+    private User user = null;
+    private Ward currentWard = null;
+    private Facade facade = new Facade();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -37,12 +50,14 @@ public class MainFXMLController implements Initializable {
             System.out.println("read");
             paneRead.setVisible(true);
         });
+
         buttonWrite.setOnAction((ActionEvent e) -> {
             paneDiary.setVisible(false);
             paneMedicine.setVisible(false);
             System.out.println("write");
             paneWrite.setVisible(true);
         });
+
         buttonMedicine.setOnAction((ActionEvent e) -> {
             paneDiary.setVisible(false);
             paneRead.setVisible(false);
@@ -53,10 +68,16 @@ public class MainFXMLController implements Initializable {
             //to do
             animWardMenu();
         });
+
         buttonSubmit.setOnAction((ActionEvent e) -> {
             //to do
         });
+        
+        //residentsLV.setItems(residents);
+        
+        
     }
+
     public void animWardMenu() {
         TranslateTransition tt = new TranslateTransition(Duration.millis(250d), wardMenu);
         if (wardMenu.getTranslateX() == 0) {
@@ -71,5 +92,13 @@ public class MainFXMLController implements Initializable {
             tt.setDuration(Duration.millis(250d));
             tt.play();
         }
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setCurrentWard(Ward ward) {
+        this.currentWard = ward;
     }
 }

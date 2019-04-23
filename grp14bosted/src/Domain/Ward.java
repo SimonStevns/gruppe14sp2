@@ -1,11 +1,12 @@
 package Domain;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Ward {
 
-    private ArrayList<Resident> residents;
-    private ArrayList<User> users;
+    private ArrayList<UUID> residents;
+    private ArrayList<UUID> users;
     private String description, residenceName;
     private int wardNumber;
 
@@ -17,7 +18,7 @@ public class Ward {
         this.users = new ArrayList<>();
     }
 
-    public boolean addResident(Resident resident) {
+    public boolean addResident(UUID resident) {
         if (!residents.contains(resident) && resident != null) {
             residents.add(resident);
             return true;
@@ -25,7 +26,7 @@ public class Ward {
         return false;
     }
 
-    public boolean addUser(User user) {
+    public boolean addUser(UUID user) {
         if (!users.contains(user) && user != null) {
             users.add(user);
             return true;

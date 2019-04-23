@@ -28,6 +28,7 @@
                         <Font name="Arial" size="12.0" />
                      </font>
                   </Button>
+                  <Label fx:id="errorLabel" alignment="CENTER" prefHeight="20.0" prefWidth="9999.0" textFill="#dd2828" />
                </children>
             </VBox>
          </children>
