@@ -2,10 +2,13 @@ package Persistens;
 
 import java.sql.DriverManager;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
 import java.sql.SQLTimeoutException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Connect {
 
@@ -47,6 +50,16 @@ public class Connect {
     public ResultSet query(String sqlQuery) throws SQLException {
         Statement stmt = conn.createStatement();
         
+        
         return stmt.executeQuery(sqlQuery);
+    }
+    
+    public PreparedStatement getPreparedstmt(String sql){
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            return pstmt;
+        } catch (SQLException ex) {}
+        
+        return null;
     }
 }

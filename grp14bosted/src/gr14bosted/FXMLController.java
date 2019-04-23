@@ -45,8 +45,7 @@ public class FXMLController implements Initializable {
             try {
                 bostedCon.openConnection();
                 ResultSet rs = bostedCon.query("SELECT * FROM users WHERE email = \"" + username.getText() + "\" AND pass = \"" + password.getText() + "\";");
-                if (rs.next()) {                    
-                    System.out.println(rs.getString("prime"));
+                if (rs.next()) {
                     Main.showMain(null);
                 } else {
                     displayError("E-mail og/eller kode er ugyldig");
@@ -55,8 +54,9 @@ public class FXMLController implements Initializable {
                 displayError("Tjek venligst din forbindelse til databasen");
             } catch (IOException ex){
                 displayError("Noget gik galt, prøv igen");
+                ex.printStackTrace();
             }
-            String user = username.getText();
+            
             
         });
         

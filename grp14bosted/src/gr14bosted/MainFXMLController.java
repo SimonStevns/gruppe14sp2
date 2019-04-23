@@ -1,15 +1,19 @@
 package gr14bosted;
 
+import Domain.Facade;
 import Domain.User;
 import Domain.Ward;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.animation.TranslateTransition;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -25,9 +29,13 @@ public class MainFXMLController implements Initializable {
     private AnchorPane wardMenu;
     @FXML
     private SplitPane splitPane;
+    @FXML
+    private ListView residentsLV;
 
+    private ObservableList residents = FXCollections.observableArrayList();
     private User user = null;
     private Ward currentWard = null;
+    private Facade facade = new Facade();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -64,6 +72,10 @@ public class MainFXMLController implements Initializable {
         buttonSubmit.setOnAction((ActionEvent e) -> {
             //to do
         });
+        
+        //residentsLV.setItems(residents);
+        
+        
     }
 
     public void animWardMenu() {
