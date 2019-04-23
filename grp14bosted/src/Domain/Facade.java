@@ -50,6 +50,7 @@ public class Facade
                 returnList.add(resident);
             }
             bostedCon.closeConnection();
+            return returnList;
             
         } catch (SQLException ex) {
             Logger.getLogger(Facade.class.getName()).log(Level.SEVERE, null, ex);

@@ -3,6 +3,7 @@ package gr14bosted;
 import Domain.Facade;
 import Domain.User;
 import Domain.Ward;
+import Domain.Resident;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.animation.TranslateTransition;
@@ -13,6 +14,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
@@ -30,9 +32,11 @@ public class MainFXMLController implements Initializable {
     @FXML
     private SplitPane splitPane;
     @FXML
-    private ListView residentsLV;
-
-    private ObservableList residents = FXCollections.observableArrayList();
+    private ListView<Resident> residentsLV;
+    //@FXML
+    //private ChoiceBox topicCB;
+    
+    private ObservableList<Resident> residents = FXCollections.observableArrayList();
     private User user = null;
     private Ward currentWard = null;
     private Facade facade = new Facade();
@@ -73,7 +77,13 @@ public class MainFXMLController implements Initializable {
             //to do
         });
         
-        //residentsLV.setItems(residents);
+        
+        //Write Diary pane
+//        topicCB.setItems(FXCollections.observableArrayList(
+//                "Sut", "min", "fed", "finger"
+//        ));
+        ObservableList<Resident> res = facade.getResidents();
+        residentsLV.setItems(res);
         
         
     }

@@ -20,7 +20,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         Main.primaryStage = primaryStage;
         try {
-            showAdmin();
+            showMain(null);
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
