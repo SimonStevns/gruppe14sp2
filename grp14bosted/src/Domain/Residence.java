@@ -6,7 +6,8 @@ public class Residence {
      //Atributes
     private String name, phoneNumber, email, addres;
     private ArrayList<Ward> wards;
-
+    
+    
     public Residence(String name, String phoneNumber, String email, String addres) 
     {
         this.name = name;

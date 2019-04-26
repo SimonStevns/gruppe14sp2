@@ -1,9 +1,11 @@
 package gr14bosted;
 
+import Domain.Diary;
 import Domain.Facade;
 import Domain.User;
 import Domain.Ward;
 import Domain.Resident;
+import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
@@ -43,10 +45,13 @@ public class MainFXMLController implements Initializable {
     @FXML
     private ListView<Resident> residentsLV;
     @FXML
+    private ListView<Diary> diariesLV;
+    @FXML
     private ChoiceBox topicCB;
 
     private ObservableList<Resident> residents;
-
+    private ObservableList<Diary> diarys;
+    
     private Facade facade = new Facade();
 
     @Override
@@ -59,8 +64,12 @@ public class MainFXMLController implements Initializable {
         buttonRead.setOnAction((ActionEvent e) -> {
             paneMedicine.setVisible(false);
             paneDiary.setVisible(false);
-            System.out.println("read");
             paneRead.setVisible(true);
+            
+            if (selectedResidentUuid() != null) {
+                diariesLV.setItems(facade.getResidentdiaries(selectedResidentUuid()));
+            }
+            
         });
 
         buttonWrite.setOnAction((ActionEvent e) -> {
@@ -100,6 +109,9 @@ public class MainFXMLController implements Initializable {
 
         residents = facade.getResidents();
         residentsLV.setItems(residents);
+        
+        diarys = FXCollections.observableArrayList();
+        diariesLV.setItems(diarys);
 
     }
 

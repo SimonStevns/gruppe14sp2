@@ -37,7 +37,7 @@
                         <Pane fx:id="paneRead" visible="false">
                            <children>
                               <Label text="Read Diary Temp Label" />
-                              <ListView prefHeight="600.0" prefWidth="446.0" />
+                              <ListView fx:id="diariesLV" prefHeight="600.0" prefWidth="446.0" />
                            </children>
                         </Pane>
                         <Pane fx:id="paneWrite" visible="false">
