@@ -51,7 +51,7 @@ public class MainFXMLController implements Initializable {
 
     private ObservableList<Resident> residents;
     private ObservableList<Diary> diarys;
-    
+
     private Facade facade = new Facade();
 
     @Override
@@ -63,11 +63,11 @@ public class MainFXMLController implements Initializable {
 
         buttonRead.setOnAction((ActionEvent e) -> {
             setVisablePane(paneRead);
-            
+
             if (selectedResidentUuid() != null) {
                 diariesLV.setItems(facade.getResidentdiaries(selectedResidentUuid()));
             }
-            
+
         });
 
         buttonWrite.setOnAction((ActionEvent e) -> {
@@ -83,9 +83,9 @@ public class MainFXMLController implements Initializable {
         });
 
         buttonSubmit.setOnAction((ActionEvent e) -> {
-            
+
             if (topicCB.getValue() != null && diaryTA.getText() != null && selectedResidentUuid() != null) {
-                if (diaryDate.getValue()== null) {
+                if (diaryDate.getValue() == null) {
                     facade.addDiaryEntry(selectedResidentUuid(), selectedTopic(), diaryTA.getText());
                 } else {
                     facade.addDiaryEntry(selectedResidentUuid(), selectedTopic(), diaryTA.getText(), diaryDate.getValue());
@@ -101,7 +101,7 @@ public class MainFXMLController implements Initializable {
 
         residents = facade.getResidents();
         residentsLV.setItems(residents);
-        
+
         diarys = FXCollections.observableArrayList();
         diariesLV.setItems(diarys);
 
@@ -126,20 +126,27 @@ public class MainFXMLController implements Initializable {
     public void setFacade(Facade f) {
         this.facade = f;
     }
-    
-    private UUID selectedResidentUuid(){
+
+    public void goBack() {
+        setVisablePane(paneDiary);
+    }
+
+    private UUID selectedResidentUuid() {
         if (residentsLV.selectionModelProperty().getValue().getSelectedItem() != null) {
             return residentsLV.selectionModelProperty().getValue().getSelectedItem().getID();
         }
         return null;
     }
-    private String selectedTopic(){
+
+    private String selectedTopic() {
         return (String) topicCB.getSelectionModel().getSelectedItem();
     }
-    private void setVisablePane (Pane p){
+
+    private void setVisablePane(Pane p) {
         paneMedicine.setVisible(false);
         paneDiary.setVisible(false);
         paneRead.setVisible(false);
+        paneWrite.setVisible(false);
         p.setVisible(true);
     }
 }
