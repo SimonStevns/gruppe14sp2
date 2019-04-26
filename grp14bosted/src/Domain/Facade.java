@@ -11,17 +11,17 @@ import javafx.collections.FXCollections;
 import java.time.LocalDate;
 
 public class Facade {
-
+    
     final private Connect bostedCon = new Connect(Connect.BOSTED_URL, "root", "");
     final private Connect borgerCon = new Connect(Connect.BORGER_URL, "root", "");
     final private Connect medicinCon = new Connect(Connect.MEDICIN_URL, "root", "");
-
+    
     private User user;
 
     public void newResident(String name, String phone, String email, File pic) throws SQLException {
         bostedCon.openConnection();
 
-        PreparedStatement pstmt = bostedCon.getPreparedstmt("INSERT INTO `test_residents` (`residentID`, `caseworkerID`, `name`, `email`, `phone`) VALUES (?, ?, ?, ?, ?);");
+        PreparedStatement pstmt = bostedCon.getPreparedstmt("INSERT INTO `residents` (`residentID`, `caseworkerID`, `name`, `email`, `phone`) VALUES (?, ?, ?, ?, ?);");
 
         pstmt.setString(1, UUID.randomUUID().toString());
         pstmt.setString(2, UUID.randomUUID().toString());
@@ -34,6 +34,41 @@ public class Facade {
 
     }
 
+    public void newUser(String name, String pass, String email, String phone, boolean own,
+            boolean all, boolean find, boolean write, boolean drug, boolean admin) throws SQLException{
+        bostedCon.openConnection();
+        PreparedStatement pstmt = bostedCon.getPreparedstmt("SELECT privlegeID FROM privleges "
+                + "WHERE VIEWOWN = ? AND VIEWALL = ? AND FIND = ? AND WRITEDIARY = ? AND DRUG = ? AND ADMIN = ?;");
+        
+        pstmt.setBoolean(1, own);
+        pstmt.setBoolean(2, all);
+        pstmt.setBoolean(3, find);
+        pstmt.setBoolean(4, write);
+        pstmt.setBoolean(5, drug);
+        pstmt.setBoolean(6, admin);
+        ResultSet rs = pstmt.executeQuery();
+        System.out.println("hej");
+        if (rs.next()) {
+            System.out.println("hej");
+            pstmt = bostedCon.getPreparedstmt("INSERT INTO users (uuid, pass, email, name, priv, phone, prime) VALUES (?, ?, ?, ?, ?, ?, ?);");
+            
+            pstmt.setString(1, UUID.randomUUID().toString());
+            pstmt.setString(2, pass);
+            pstmt.setString(3, email);
+            pstmt.setString(4, name);
+            pstmt.setInt(5, rs.getInt("privlegeID"));
+            pstmt.setString(6, phone);
+            pstmt.setString(7, "1");
+            pstmt.executeUpdate();
+            
+            
+        } else {
+            
+        }
+        
+        //PreparedStatement pstmt = bostedCon.getPreparedstmt("INSERT INTO users (uuid, pass, email, name, priv, phone, prime) VALUES (?, ?, ?, ?, ?, ?, ?);");
+    }
+    
     public ObservableList<Resident> getResidents() {
         try {
             bostedCon.openConnection();
@@ -152,6 +187,21 @@ public class Facade {
         }
         return FXCollections.observableArrayList();
         
+    }
+    public void addPriv(boolean own, boolean all, boolean find, boolean write, boolean drug, boolean admin, int id) throws SQLException{
+        bostedCon.openConnection();
+        PreparedStatement pstmt = bostedCon.getPreparedstmt("INSERT INTO privleges (VIEWOWN, VIEWALL, FIND, WRITEDIARY, DRUG, ADMIN, privlegeID) VALUES (? ,? ,? ,? ,? ,? , ?);");
+        
+        pstmt.setBoolean(1, own);
+        pstmt.setBoolean(2, all);
+        pstmt.setBoolean(3, find);
+        pstmt.setBoolean(4, write);
+        pstmt.setBoolean(5, drug);
+        pstmt.setBoolean(6, admin);
+        pstmt.setInt(7, id);
+        pstmt.executeUpdate();
+        
+        bostedCon.closeConnection();
     }
 
 }

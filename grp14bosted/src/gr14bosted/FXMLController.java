@@ -15,6 +15,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -85,7 +86,7 @@ public class FXMLController implements Initializable {
             
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == buttonAdmin){
-                    Main.showAdmin();
+                    Main.showAdmin(facade);
             } else {
                 Main.showMain(facade);
             }

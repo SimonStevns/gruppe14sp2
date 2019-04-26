@@ -35,7 +35,7 @@ public class AdminController implements Initializable {
     @FXML
     private Button btnCreateUser,btnCreateRes,resSelectPic, userSelectPic;
     
-    private File currentPic;
+    private File currentPic = null;
     
     private Facade facade = new Facade();
     
@@ -44,9 +44,24 @@ public class AdminController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
          
         btnCreateRes.setOnAction((ActionEvent e) -> {
-             if (currentPic != null && resName.getText() != "" && resPhone.getText() != "" && resEmail.getText() != "") {
+             if (residentAllFieldsfilled()) {
                  try {
                      facade.newResident(resName.getText(), resPhone.getText(), resEmail.getText(), currentPic);
+                 } catch (SQLException ex) {
+                     Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+                 }
+             }
+         });
+        
+        resSelectPic.setOnAction((ActionEvent e) -> {
+            openFileSelector();
+        });
+        
+        btnCreateUser.setOnAction((ActionEvent e) -> {
+             if (userAllFieldsfilled()) {
+                 try {
+                     facade.newUser(userName.getText(), userPass.getText(), userEmail.getText(), userPhone.getText(), privOwn.isSelected()
+                            , privAll.isSelected(), privFind.isSelected(), privWrite.isSelected(), privDrugs.isSelected(), privAdmin.isSelected());
                  } catch (SQLException ex) {
                      Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
                  }
@@ -64,8 +79,23 @@ public class AdminController implements Initializable {
         facade.getResidents();
         FileChooser fc = new FileChooser();
         fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("jpg bilede", "*.jpg"));
-        currentPic = fc.showOpenDialog(null);
-        
+        currentPic = fc.showOpenDialog(null);   
+    }
+    
+    private boolean userAllFieldsfilled(){
+        boolean allCBUnSelected = !privOwn.isSelected() && !privAll.isSelected() && !privFind.isSelected() 
+                && !privWrite.isSelected() && !privDrugs.isSelected() && !privAdmin.isSelected() ;
+        System.out.println(allCBUnSelected);
+        return (!allCBUnSelected &&!userEmail.getText().isEmpty() && !userName.getText().isEmpty() && !userPass.getText().isEmpty()
+                && !userPhone.getText().isEmpty() && currentPic != null);
+    }
+    
+    private boolean residentAllFieldsfilled(){
+        return currentPic != null && !resName.getText().isEmpty() && !resPhone.getText().isEmpty() && !resEmail.getText().isEmpty();
+    }
+    
+    public void setFacade(Facade f){
+        this.facade = f;
     }
     
 }
