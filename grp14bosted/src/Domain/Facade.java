@@ -7,8 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javafx.collections.ObservableList;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import java.time.LocalDate;
 
@@ -39,7 +37,7 @@ public class Facade {
     public ObservableList<Resident> getResidents() {
         try {
             bostedCon.openConnection();
-            ResultSet rs = bostedCon.query("SELECT residentID, name, phone FROM test_residents;");
+            ResultSet rs = bostedCon.query("SELECT residentID, name, phone FROM residents;");
             ObservableList<Resident> returnList = FXCollections.observableArrayList();
             while (rs.next()) {
                 Resident resident = new Resident(
@@ -49,7 +47,6 @@ public class Facade {
             return returnList;
 
         } catch (SQLException ex) {
-            Logger.getLogger(Facade.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             bostedCon.closeConnection();
         }
@@ -71,9 +68,20 @@ public class Facade {
 
         if (rs.next()) {
             boolean[] b = {
-                rs.getBoolean("VIEWOWN"), rs.getBoolean("VIEWALL"), rs.getBoolean("FIND"), rs.getBoolean("WRITEDIARY"), rs.getBoolean("DRUG"), rs.getBoolean("ADMIN")
+                rs.getBoolean("VIEWOWN")
+                , rs.getBoolean("VIEWALL")
+                , rs.getBoolean("FIND")
+                , rs.getBoolean("WRITEDIARY")
+                , rs.getBoolean("DRUG")
+                , rs.getBoolean("ADMIN")
             };
-            user = new User(new Privileges(b), UUID.fromString(rs.getString("uuid")), rs.getString("name"), rs.getString("email"), rs.getString("pass"), rs.getString("phone"));
+            user = new User(
+                new Privileges(b)
+                , UUID.fromString(rs.getString("uuid"))
+                , rs.getString("name")
+                , rs.getString("email")
+                , rs.getString("pass")
+                , rs.getString("phone"));
             bostedCon.closeConnection();
             return true;
         }

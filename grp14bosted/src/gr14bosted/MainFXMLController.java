@@ -2,27 +2,30 @@ package gr14bosted;
 
 import Domain.Diary;
 import Domain.Facade;
-import Domain.User;
-import Domain.Ward;
 import Domain.Resident;
-import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -48,6 +51,8 @@ public class MainFXMLController implements Initializable {
     private ListView<Diary> diariesLV;
     @FXML
     private ChoiceBox topicCB;
+    @FXML
+    private TextField customTopicTF;
 
     private ObservableList<Resident> residents;
     private ObservableList<Diary> diarys;
@@ -57,14 +62,17 @@ public class MainFXMLController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-
+        residents = facade.getResidents();
+        residentsLV.setItems(residents);
+        residentsLV.getSelectionModel().selectFirst();
+        
         splitPane.lookupAll(".split-pane-divider").stream()
                 .forEach(div -> div.setMouseTransparent(true));
 
         buttonRead.setOnAction((ActionEvent e) -> {
             setVisablePane(paneRead);
 
-            if (selectedResidentUuid() != null) {
+            if (selectedResident() != null) {
                 diariesLV.setItems(facade.getResidentdiaries(selectedResidentUuid()));
             }
 
@@ -81,29 +89,45 @@ public class MainFXMLController implements Initializable {
             //to do
             animWardMenu();
         });
-
+        
+        //Write Diary pane
         buttonSubmit.setOnAction((ActionEvent e) -> {
 
-            if (topicCB.getValue() != null && diaryTA.getText() != null && selectedResidentUuid() != null) {
+            if (topicCB.getValue() != null && selectedResident() != null && !diaryTA.getText().isEmpty() ) {
                 if (diaryDate.getValue() == null) {
                     facade.addDiaryEntry(selectedResidentUuid(), selectedTopic(), diaryTA.getText());
                 } else {
                     facade.addDiaryEntry(selectedResidentUuid(), selectedTopic(), diaryTA.getText(), diaryDate.getValue());
                 }
+                clearDiary();
+                goBack();
+                showDialogAutoClose("Dagbog tilføjet", "For beboeren " + selectedResident().getName(), 2d);
+            } else {
+                showDialog("Fejl", "Udfyld venligst alle felter");
             }
-
         });
-
-        //Write Diary pane
+        
         topicCB.setItems(FXCollections.observableArrayList(
-                "Sut", "min", "fede", "finger"
+                "Fritid", "Familie", "Medicin", new Separator(), "Andet: "
         ));
-
-        residents = facade.getResidents();
-        residentsLV.setItems(residents);
-
+        topicCB.getSelectionModel().selectFirst();
+        
+        topicCB.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>(){
+            @Override
+            public void changed(ObservableValue ov, Number value, Number newValue){
+                if (newValue.intValue() + 1 == topicCB.getItems().size()) {
+                    customTopicTF.setVisible(true);
+                } else {
+                    customTopicTF.setVisible(false);
+                }
+            }
+        });
+        
         diarys = FXCollections.observableArrayList();
         diariesLV.setItems(diarys);
+        
+        diaryDate.setValue(LocalDate.now());
+        diaryDate.setShowWeekNumbers(true);
 
     }
 
@@ -131,14 +155,25 @@ public class MainFXMLController implements Initializable {
         setVisablePane(paneDiary);
     }
 
-    private UUID selectedResidentUuid() {
+    private Resident selectedResident() {
         if (residentsLV.selectionModelProperty().getValue().getSelectedItem() != null) {
-            return residentsLV.selectionModelProperty().getValue().getSelectedItem().getID();
+            return residentsLV.selectionModelProperty().getValue().getSelectedItem();
+        }
+        return null;
+    }    
+    
+    private UUID selectedResidentUuid() {
+        if (selectedResident() != null) {
+            return selectedResident().getID();
         }
         return null;
     }
 
     private String selectedTopic() {
+        if (customTopicTF.isVisible() && customTopicTF.getText() != null) {
+            return customTopicTF.getText();
+        }
+        
         return (String) topicCB.getSelectionModel().getSelectedItem();
     }
 
@@ -149,4 +184,33 @@ public class MainFXMLController implements Initializable {
         paneWrite.setVisible(false);
         p.setVisible(true);
     }
+    
+    private void clearDiary(){
+        topicCB.getSelectionModel().selectFirst();
+        diaryTA.clear();
+        diaryDate.setValue(LocalDate.now());
+    }
+    
+    private void showDialog(String titel, String dialog){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(titel);
+        alert.setContentText(dialog);
+        alert.setHeaderText(null);
+        alert.setGraphic(null);
+        alert.show();
+    }
+    
+    private void showDialogAutoClose(String titel, String dialog, double duration){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(titel);
+        alert.setContentText(dialog);
+        alert.setHeaderText(null);
+        alert.setGraphic(null);
+        alert.show();
+        
+        PauseTransition delay = new PauseTransition(Duration.seconds(duration));
+        delay.setOnFinished(event -> alert.close());
+        delay.play();
+    }
+
 }

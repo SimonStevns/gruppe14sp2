@@ -2,11 +2,6 @@ package Domain;
 
 import java.util.HashMap;
 
-enum Privilege {
-
-    VIEWOWNDIARYS, VIEWALLDIARYS, FINDJOURNAL, WRITEDIARY, DRUGDISTRIBUTION, ADMIN
-}
-
 public class Privileges {
 
     private final HashMap<Privilege, Boolean> privileges = new HashMap<>();

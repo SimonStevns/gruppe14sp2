@@ -1,9 +1,8 @@
 package gr14bosted;
 
 import Domain.Facade;
+import Domain.Privilege;
 import Domain.Privileges;
-import Domain.User;
-import Domain.Ward;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -15,10 +14,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import Persistens.Connect;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 
 public class FXMLController implements Initializable {
 
@@ -34,7 +36,6 @@ public class FXMLController implements Initializable {
     @FXML
     private Label errorLabel;
 
-    private Connect bostedCon = new Connect(Connect.BOSTED_URL, "root", "");
     private Facade facade = new Facade();
 
     @Override
@@ -45,7 +46,11 @@ public class FXMLController implements Initializable {
 
             try {
                 if (facade.setUser(username.getText(), password.getText())) {
-                    Main.showMain(facade);
+                    if (facade.hasPrivlege(Privilege.ADMIN)) {
+                        selectShow();
+                    } else {
+                        Main.showMain(facade);
+                    }
                 } else {
                     displayError("E-mail og/eller kode er ugyldig");
                 }
@@ -65,5 +70,25 @@ public class FXMLController implements Initializable {
     private void displayError(String error) {
         errorLabel.setVisible(true);
         errorLabel.setText(error);
+    }
+    
+    private void selectShow(){
+        try {
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setHeaderText(null);
+            alert.setContentText("Hvilken side vil du tilgå?");
+            
+            ButtonType buttonAdmin = new ButtonType("Admin");
+            ButtonType buttonMain = new ButtonType("Hovedside");
+            
+            alert.getButtonTypes().setAll(buttonAdmin, buttonMain);
+            
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == buttonAdmin){
+                    Main.showAdmin();
+            } else {
+                Main.showMain(facade);
+            }
+        } catch (IOException ex) {}
     }
 }

@@ -1,0 +1,6 @@
+package Domain;
+
+public enum Privilege {
+
+    VIEWOWNDIARYS, VIEWALLDIARYS, FINDJOURNAL, WRITEDIARY, DRUGDISTRIBUTION, ADMIN
+}
