@@ -47,9 +47,7 @@ public class Facade {
         pstmt.setBoolean(5, drug);
         pstmt.setBoolean(6, admin);
         ResultSet rs = pstmt.executeQuery();
-        System.out.println("hej");
         if (rs.next()) {
-            System.out.println("hej");
             pstmt = bostedCon.getPreparedstmt("INSERT INTO users (uuid, pass, email, name, priv, phone, prime) VALUES (?, ?, ?, ?, ?, ?, ?);");
             
             pstmt.setString(1, UUID.randomUUID().toString());
@@ -62,11 +60,7 @@ public class Facade {
             pstmt.executeUpdate();
             
             
-        } else {
-            
         }
-        
-        //PreparedStatement pstmt = bostedCon.getPreparedstmt("INSERT INTO users (uuid, pass, email, name, priv, phone, prime) VALUES (?, ?, ?, ?, ?, ?, ?);");
     }
     
     public ObservableList<Resident> getResidents() {

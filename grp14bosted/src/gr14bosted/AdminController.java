@@ -84,8 +84,7 @@ public class AdminController implements Initializable {
     
     private boolean userAllFieldsfilled(){
         boolean allCBUnSelected = !privOwn.isSelected() && !privAll.isSelected() && !privFind.isSelected() 
-                && !privWrite.isSelected() && !privDrugs.isSelected() && !privAdmin.isSelected() ;
-        System.out.println(allCBUnSelected);
+                && !privWrite.isSelected() && !privDrugs.isSelected() && !privAdmin.isSelected();
         return (!allCBUnSelected &&!userEmail.getText().isEmpty() && !userName.getText().isEmpty() && !userPass.getText().isEmpty()
                 && !userPhone.getText().isEmpty() && currentPic != null);
     }
