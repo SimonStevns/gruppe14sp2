@@ -42,10 +42,10 @@
                         </Pane>
                         <Pane fx:id="paneWrite" visible="false">
                            <children>
-                              <ChoiceBox layoutX="14.0" layoutY="80.0" prefWidth="150.0" />
-                              <DatePicker layoutX="241.0" layoutY="172.0" />
+                              <ChoiceBox fx:id="topicCB" layoutX="14.0" layoutY="80.0" prefWidth="150.0" />
+                              <DatePicker fx:id="diaryDate" layoutX="241.0" layoutY="172.0" />
                               <Label layoutX="76.0" layoutY="44.0" text="Skriv" />
-                              <TextArea layoutX="27.0" layoutY="126.0" prefHeight="406.0" prefWidth="200.0" />
+                              <TextArea fx:id="diaryTA" layoutX="27.0" layoutY="126.0" prefHeight="406.0" prefWidth="200.0" />
                               <Button fx:id="buttonSubmit" layoutX="311.0" layoutY="507.0" mnemonicParsing="false" text="Skriv dagbog" />
                            </children>
                         </Pane>

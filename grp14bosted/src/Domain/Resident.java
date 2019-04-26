@@ -16,7 +16,7 @@ public class Resident {
     }
 
     //Methods
-    public UUID ID() {
+    public UUID getID() {
         return this.ID;
     }
 

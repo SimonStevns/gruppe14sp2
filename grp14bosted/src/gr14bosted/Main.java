@@ -1,5 +1,6 @@
 package gr14bosted;
 
+import Domain.Facade;
 import Domain.User;
 import java.io.IOException;
 import java.util.UUID;
@@ -20,7 +21,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         Main.primaryStage = primaryStage;
         try {
-            showMain(null);
+            showLogin();
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -39,13 +40,13 @@ public class Main extends Application {
         primaryStage.show();
     }
     
-    public static void showMain(User u) throws IOException{
+    public static void showMain(Facade f) throws IOException{
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("MainFXML.fxml"));
         AnchorPane layout = loader.load();
         
         MainFXMLController mainController = loader.getController();
-        mainController.setUser(u);
+        mainController.setFacade(f);
         
         Scene scene = new Scene(layout);
         primaryStage.setScene(scene);

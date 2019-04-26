@@ -1,5 +1,6 @@
 package gr14bosted;
 
+import Domain.Facade;
 import Domain.Privileges;
 import Domain.User;
 import Domain.Ward;
@@ -32,47 +33,37 @@ public class FXMLController implements Initializable {
     private PasswordField password;
     @FXML
     private Label errorLabel;
-    
+
     private Connect bostedCon = new Connect(Connect.BOSTED_URL, "root", "");
-    
+    private Facade facade = new Facade();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+
         button.setOnAction((ActionEvent e) -> {
             vbox.requestFocus();
-            
+
             try {
-                bostedCon.openConnection();
-                ResultSet rs = bostedCon.query("SELECT * FROM users WHERE email = \"" + username.getText() + "\" AND pass = \"" + password.getText() + "\";");
-                if (rs.next()) {
-                    Main.showMain(null);
+                if (facade.setUser(username.getText(), password.getText())) {
+                    Main.showMain(facade);
                 } else {
                     displayError("E-mail og/eller kode er ugyldig");
                 }
             } catch (SQLException ex) {
                 displayError("Tjek venligst din forbindelse til databasen");
-            } catch (IOException ex){
+                ex.printStackTrace();
+            } catch (IOException ex) {
                 displayError("Noget gik galt, prøv igen");
                 ex.printStackTrace();
             }
-            
-            
+
         });
-        
+
         errorLabel.setVisible(false);
     }
-    
-    private void displayError(String error){
+
+    private void displayError(String error) {
         errorLabel.setVisible(true);
         errorLabel.setText(error);
-    }
-    
-    private User rsToUser(){
-        boolean[] b = {true,true,true,true,true,true};
-        Privileges w1p = new Privileges(b);
-        //User user = new User(w1p, "Simon Stevns","Simon@test.dk", "test", "88888888", new Ward(wardnumber, null, null),new ArrayList<>());
-        
-        return null;
     }
 }
