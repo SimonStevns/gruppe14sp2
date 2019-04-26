@@ -62,9 +62,7 @@ public class MainFXMLController implements Initializable {
                 .forEach(div -> div.setMouseTransparent(true));
 
         buttonRead.setOnAction((ActionEvent e) -> {
-            paneMedicine.setVisible(false);
-            paneDiary.setVisible(false);
-            paneRead.setVisible(true);
+            setVisablePane(paneRead);
             
             if (selectedResidentUuid() != null) {
                 diariesLV.setItems(facade.getResidentdiaries(selectedResidentUuid()));
@@ -73,17 +71,11 @@ public class MainFXMLController implements Initializable {
         });
 
         buttonWrite.setOnAction((ActionEvent e) -> {
-            paneDiary.setVisible(false);
-            paneMedicine.setVisible(false);
-            System.out.println("write");
-            paneWrite.setVisible(true);
+            setVisablePane(paneRead);
         });
 
         buttonMedicine.setOnAction((ActionEvent e) -> {
-            paneDiary.setVisible(false);
-            paneRead.setVisible(false);
-            System.out.println("checkMedicine");
-            paneMedicine.setVisible(true);
+            setVisablePane(paneMedicine);
         });
         buttonWard.setOnAction((ActionEvent e) -> {
             //to do
@@ -140,5 +132,11 @@ public class MainFXMLController implements Initializable {
     }
     private String selectedTopic(){
         return (String) topicCB.getSelectionModel().getSelectedItem();
+    }
+    private void setVisablePane (Pane p){
+        paneMedicine.setVisible(false);
+        paneDiary.setVisible(false);
+        paneRead.setVisible(false);
+        p.setVisible(true);
     }
 }
