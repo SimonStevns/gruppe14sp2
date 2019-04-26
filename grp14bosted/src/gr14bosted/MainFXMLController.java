@@ -71,7 +71,7 @@ public class MainFXMLController implements Initializable {
         });
 
         buttonWrite.setOnAction((ActionEvent e) -> {
-            setVisablePane(paneRead);
+            setVisablePane(paneWrite);
         });
 
         buttonMedicine.setOnAction((ActionEvent e) -> {
@@ -128,7 +128,10 @@ public class MainFXMLController implements Initializable {
     }
     
     private UUID selectedResidentUuid(){
-        return residentsLV.selectionModelProperty().getValue().getSelectedItem().getID();
+        if (residentsLV.selectionModelProperty().getValue().getSelectedItem() != null) {
+            return residentsLV.selectionModelProperty().getValue().getSelectedItem().getID();
+        }
+        return null;
     }
     private String selectedTopic(){
         return (String) topicCB.getSelectionModel().getSelectedItem();
