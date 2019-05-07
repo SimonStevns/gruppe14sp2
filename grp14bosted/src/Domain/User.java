@@ -10,6 +10,7 @@ public class User
     private UUID id;
     private Ward primaryWard;
     private ArrayList<Ward> secondaryWards;
+    private PassChecker passChecker;
 
     public User(Privileges priv, UUID id, String name, String email, String password, String phoneNumber, Ward primaryWard, ArrayList<Ward> secondaryWards) 
     {
@@ -17,7 +18,9 @@ public class User
         this.priv = priv;
         this.name = name;
         this.email = email;
+        if (passChecker.checkPassword(password)){
         this.password = password;
+        }
         this.phoneNumber = phoneNumber;      
         this.primaryWard = primaryWard;
         this.secondaryWards = secondaryWards;
