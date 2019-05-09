@@ -21,6 +21,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
@@ -105,7 +106,7 @@ public class AdminController implements Initializable {
         });
 
         btnCreateUser.setOnAction((ActionEvent e) -> {
-            if (userAllFieldsfilled()) {
+            if (userAllFieldsfilled() && validateInput("Brugernavn",userName.getText(), 8)) {
                 try {
                     facade.newUser(userName.getText(), userPass.getText(), userEmail.getText(), userPhone.getText(), privOwn.isSelected(), privAll.isSelected(), privFind.isSelected(), privWrite.isSelected(), privDrugs.isSelected(), privAdmin.isSelected());
                 } catch (SQLException ex) {
@@ -125,6 +126,14 @@ public class AdminController implements Initializable {
         FileChooser fc = new FileChooser();
         fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("jpg bilede", "*.jpg"));
         currentPic = fc.showOpenDialog(null);
+    }
+    
+    private boolean validateInput(String inputName,String input, int length){
+        if (input.length() > length){
+            showDialog("Fejl ved oprettelse", inputName + " er for langt, det skal fylde mindre " + length + " numre/bogstaver ");
+        }
+        return input.length() <= length;
+        
     }
 
     private boolean wardAllFieldsfilled() {
@@ -158,6 +167,15 @@ public class AdminController implements Initializable {
 
     public void setFacade(Facade f) {
         this.facade = f;
+    }
+    
+     private void showDialog(String titel, String dialog){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(titel);
+        alert.setContentText(dialog);
+        alert.setHeaderText(null);
+        alert.setGraphic(null);
+        alert.show();
     }
 
 }
