@@ -46,6 +46,8 @@
                   <Label layoutX="120.0" layoutY="126.0" text="E-mail" />
                   <Button fx:id="resSelectPic" layoutX="183.0" layoutY="182.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="300.0" text="Vælg billede" />
                   <Button fx:id="btnCreateRes" layoutX="183.0" layoutY="261.0" mnemonicParsing="false" text="Opret bruger" />
+                  <TextField fx:id="rescpr" layoutX="183.0" layoutY="72.0" prefHeight="25.0" prefWidth="300.0" />
+                  <Label layoutX="119.0" layoutY="76.0" text="cpr nr" />
                </children></AnchorPane>
       </content>
     </Tab>

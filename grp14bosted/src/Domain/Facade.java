@@ -35,6 +35,7 @@ public class Facade
         pstmt.executeUpdate();
         bostedCon.closeConnection();
         
+        
     }
     
     public ObservableList<Resident> getResidents(){

@@ -18,6 +18,8 @@ import Persistens.Connect;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class FXMLController implements Initializable {
 
@@ -34,7 +36,7 @@ public class FXMLController implements Initializable {
     private Label errorLabel;
     
     private Connect bostedCon = new Connect(Connect.BOSTED_URL, "root", "");
-    
+    private Connect borgerCon = new Connect(Connect.BORGER_URL, "root", "");
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -56,7 +58,13 @@ public class FXMLController implements Initializable {
                 displayError("Noget gik galt, prøv igen");
                 ex.printStackTrace();
             }
-            
+            try {
+            borgerCon.openConnection();
+                System.out.println(" hej med dig borgers");
+            } catch (SQLException ex) {
+                Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("nej");
+            }
             
         });
         
