@@ -221,9 +221,9 @@ public class Facade {
 
             pstmt.close();
 
-            bostedCon.update(MessageFormat.format("CREATE TABLE IF NOT EXISTS `residents_{0}` ( `residentID` VARCHAR(36) NOT NULL );", wardID));
+            bostedCon.query(MessageFormat.format("CREATE TABLE IF NOT EXISTS `residents_{0}` ( `residentID` VARCHAR(36) NOT NULL );", wardID));
 
-            bostedCon.update(MessageFormat.format("CREATE TABLE IF NOT EXISTS `grp14bosted`.`diaries_{0}` "
+            bostedCon.query(MessageFormat.format("CREATE TABLE IF NOT EXISTS `grp14bosted`.`diaries_{0}` "
                     + "( `residenceID` VARCHAR(36) NOT NULL "
                     + ", `author` VARCHAR(36) NOT NULL "
                     + ", `topic` VARCHAR(100) NOT NULL "

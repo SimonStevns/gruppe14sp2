@@ -18,11 +18,8 @@ public class User
         this.priv = priv;
         this.name = name;
         this.email = email;
-        if (passChecker.checkPassword(password)){
         this.password = password;
-        this.phoneNumber = phoneNumber;
-        }
-      
+        this.phoneNumber = phoneNumber;      
     }
 
     public Ward getPrimaryWard(){
