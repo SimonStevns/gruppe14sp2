@@ -58,7 +58,9 @@ public class Facade {
             pstmt.setInt(5, rs.getInt("privlegeID"));
             pstmt.setString(6, phone);
             pstmt.setString(7, "1");
-            pstmt.executeUpdate();
+            pstmt.executeUpdate();        
+            pstmt.close();          
+            bostedCon.closeConnection();
 
         }
     }
