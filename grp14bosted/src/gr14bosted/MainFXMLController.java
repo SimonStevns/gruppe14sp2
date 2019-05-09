@@ -106,6 +106,7 @@ public class MainFXMLController implements Initializable {
                 showDialog("Fejl", "Udfyld venligst alle felter");
             }
         });
+        diaryTA.setWrapText(true);
         
         topicCB.setItems(FXCollections.observableArrayList(
                 "Fritid", "Familie", "Medicin", new Separator(), "Andet: "

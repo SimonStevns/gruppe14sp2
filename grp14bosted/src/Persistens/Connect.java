@@ -32,6 +32,7 @@ public class Connect {
             //Register JDBC driver
             Class.forName(JDBC_DRIVER);
             conn = DriverManager.getConnection(URL, USER, PASS);
+            
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
         }
@@ -49,8 +50,6 @@ public class Connect {
 
     public ResultSet query(String sqlQuery) throws SQLException {
         Statement stmt = conn.createStatement();
-        
-        
         return stmt.executeQuery(sqlQuery);
     }
     

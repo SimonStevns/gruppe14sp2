@@ -1,15 +1,17 @@
 package Domain;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Residence {
-     //Atributes
+    private UUID ID;
     private String name, phoneNumber, email, addres;
     private ArrayList<Ward> wards;
     
     
-    public Residence(String name, String phoneNumber, String email, String addres) 
+    public Residence(UUID ID, String name, String phoneNumber, String email, String addres) 
     {
+        this.ID = ID;
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
@@ -31,12 +33,12 @@ public class Residence {
         
         return wards.size() + 1;
     }
+    public UUID getId(){
+        return this.ID;
+    }
     
     @Override
     public String toString(){
-        String returnString = "" + this.name + "\n";
-        returnString += "";
-        returnString = wards.stream().map((ward) -> ward.toString() + "\n").reduce(returnString, String::concat);
-        return returnString;
+        return this.name;
     }
 }

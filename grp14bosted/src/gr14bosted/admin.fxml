@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -10,27 +11,61 @@
 
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr14bosted.AdminController">
   <tabs>
+      <Tab text="Nyt bosted">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <TextField fx:id="residenceName" layoutX="150.0" layoutY="99.0" prefHeight="25.0" prefWidth="300.0" />
+                  <TextField fx:id="residenceAddress" layoutX="150.0" layoutY="124.0" prefHeight="25.0" prefWidth="300.0" />
+                  <TextField fx:id="residencePhone" layoutX="150.0" layoutY="149.0" prefHeight="25.0" prefWidth="300.0" />
+                  <Label layoutX="109.0" layoutY="103.0" text="Navn" />
+                  <TextField fx:id="residenceEmail" layoutX="150.0" layoutY="174.0" prefHeight="25.0" prefWidth="300.0" />
+                  <Label layoutX="93.0" layoutY="128.0" text="Adresse" />
+                  <Label layoutX="103.0" layoutY="153.0" text="Telefon" />
+                  <Label layoutX="106.0" layoutY="178.0" text="E-mail" />
+                  <Button fx:id="btnCreateResidence" layoutX="257.0" layoutY="261.0" mnemonicParsing="false" text="Opret bosted" />
+               </children>
+            </AnchorPane>
+        </content>
+      </Tab>
+      <Tab text="Ny afdelling">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <ChoiceBox fx:id="wardCB" layoutX="174.0" layoutY="44.0" prefWidth="300.0" />
+                  <TextField fx:id="wardName" layoutX="174.0" layoutY="138.0" prefWidth="300.0" />
+                  <TextField fx:id="wardDescription" layoutX="174.0" layoutY="163.0" prefWidth="300.0" />
+                  <Label layoutX="35.0" layoutY="48.0" text="Vælg tilhørende bosted" />
+                  <Label layoutX="132.0" layoutY="142.0" text="Navn" />
+                  <Label layoutX="103.0" layoutY="167.0" text="Beskrivelse" />
+                  <Button fx:id="btnCreateWard" layoutX="252.0" layoutY="261.0" mnemonicParsing="false" text="Opret afdelling" />
+               </children>
+            </AnchorPane>
+        </content>
+      </Tab>
     <Tab text="Ny bruger">
       <content>
         <AnchorPane fx:id="tabNewUser" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <TextField fx:id="userName" layoutX="170.0" layoutY="66.0" prefHeight="25.0" prefWidth="300.0" />
-                  <TextField fx:id="userEmail" layoutX="170.0" layoutY="91.0" prefWidth="300.0" />
-                  <TextField fx:id="userPhone" layoutX="170.0" layoutY="116.0" prefWidth="300.0" />
-                  <TextField fx:id="userPass" layoutX="170.0" layoutY="141.0" prefWidth="300.0" />
-                  <Label layoutX="134.0" layoutY="70.0" text="Navn" />
-                  <Label layoutX="131.0" layoutY="95.0" text="E-mail" />
-                  <Label layoutX="77.0" layoutY="120.0" text="Telefonnummer" />
-                  <Label layoutX="119.0" layoutY="145.0" text="Kodeord" />
-                  <CheckBox fx:id="privOwn" layoutX="170.0" layoutY="258.0" mnemonicParsing="false" text="Vis egne patienters dagbog" />
-                  <CheckBox fx:id="privAll" layoutX="170.0" layoutY="292.0" mnemonicParsing="false" text="Vis alle patienters dagbog" />
-                  <CheckBox fx:id="privFind" layoutX="170.0" layoutY="330.0" mnemonicParsing="false" text="Find journal" />
-                  <CheckBox fx:id="privWrite" layoutX="170.0" layoutY="366.0" mnemonicParsing="false" text="Skriv dagbog" />
-                  <CheckBox fx:id="privDrugs" layoutX="170.0" layoutY="402.0" mnemonicParsing="false" text="Medicin uddelling" />
-                  <CheckBox fx:id="privAdmin" layoutX="170.0" layoutY="442.0" mnemonicParsing="false" text="Admin" />
-                  <Label layoutX="173.0" layoutY="226.0" prefHeight="17.0" prefWidth="301.0" text="________________________Privileger________________________" />
-                  <Button fx:id="btnCreateUser" layoutX="219.0" layoutY="488.0" mnemonicParsing="false" text="Opret bruger" />
-                  <Button fx:id="userSelectPic" layoutX="172.0" layoutY="189.0" mnemonicParsing="false" prefWidth="300.0" text="Vælg billede" />
+                  <TextField fx:id="userName" layoutX="170.0" layoutY="115.0" prefHeight="25.0" prefWidth="300.0" />
+                  <TextField fx:id="userEmail" layoutX="170.0" layoutY="140.0" prefWidth="300.0" />
+                  <TextField fx:id="userPhone" layoutX="170.0" layoutY="165.0" prefWidth="300.0" />
+                  <TextField fx:id="userPass" layoutX="170.0" layoutY="190.0" prefWidth="300.0" />
+                  <Label layoutX="134.0" layoutY="119.0" text="Navn" />
+                  <Label layoutX="131.0" layoutY="144.0" text="E-mail" />
+                  <Label layoutX="77.0" layoutY="169.0" text="Telefonnummer" />
+                  <Label layoutX="119.0" layoutY="194.0" text="Kodeord" />
+                  <Button fx:id="userSelectPic" layoutX="172.0" layoutY="238.0" mnemonicParsing="false" prefWidth="300.0" text="Vælg billede" />
+                  <Label layoutX="173.0" layoutY="275.0" prefHeight="17.0" prefWidth="301.0" text="________________________Privileger________________________" />
+                  <CheckBox fx:id="privOwn" layoutX="170.0" layoutY="307.0" mnemonicParsing="false" text="Vis egne patienters dagbog" />
+                  <CheckBox fx:id="privAll" layoutX="170.0" layoutY="341.0" mnemonicParsing="false" text="Vis alle patienters dagbog" />
+                  <CheckBox fx:id="privFind" layoutX="170.0" layoutY="379.0" mnemonicParsing="false" text="Find journal" />
+                  <CheckBox fx:id="privWrite" layoutX="170.0" layoutY="415.0" mnemonicParsing="false" text="Skriv dagbog" />
+                  <CheckBox fx:id="privDrugs" layoutX="170.0" layoutY="451.0" mnemonicParsing="false" text="Medicin uddelling" />
+                  <CheckBox fx:id="privAdmin" layoutX="170.0" layoutY="491.0" mnemonicParsing="false" text="Admin" />
+                  <Button fx:id="btnCreateUser" layoutX="219.0" layoutY="537.0" mnemonicParsing="false" text="Opret bruger" />
+                  <ChoiceBox fx:id="userResidenceCB" layoutX="170.0" layoutY="20.0" prefHeight="25.0" prefWidth="300.0" />
+                  <ChoiceBox fx:id="userWardCB" layoutX="170.0" layoutY="64.0" prefHeight="25.0" prefWidth="300.0" />
                </children></AnchorPane>
       </content>
     </Tab>
@@ -38,14 +73,16 @@
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <TextField fx:id="resPhone" layoutX="183.0" layoutY="147.0" prefHeight="25.0" prefWidth="300.0" />
-                  <TextField fx:id="resEmail" layoutX="183.0" layoutY="122.0" prefHeight="25.0" prefWidth="300.0" />
-                  <TextField fx:id="resName" layoutX="183.0" layoutY="97.0" prefHeight="25.0" prefWidth="300.0" />
-                  <Label layoutX="120.0" layoutY="101.0" text="Navn" />
-                  <Label layoutX="117.0" layoutY="151.0" text="Telefon" />
-                  <Label layoutX="120.0" layoutY="126.0" text="E-mail" />
-                  <Button fx:id="resSelectPic" layoutX="183.0" layoutY="182.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="300.0" text="Vælg billede" />
-                  <Button fx:id="btnCreateRes" layoutX="183.0" layoutY="261.0" mnemonicParsing="false" text="Opret bruger" />
+                  <TextField fx:id="resName" layoutX="183.0" layoutY="174.0" prefHeight="25.0" prefWidth="300.0" />
+                  <TextField fx:id="resEmail" layoutX="183.0" layoutY="199.0" prefHeight="25.0" prefWidth="300.0" />
+                  <TextField fx:id="resPhone" layoutX="183.0" layoutY="224.0" prefHeight="25.0" prefWidth="300.0" />
+                  <Label layoutX="120.0" layoutY="178.0" text="Navn" />
+                  <Label layoutX="117.0" layoutY="228.0" text="Telefon" />
+                  <Label layoutX="120.0" layoutY="203.0" text="E-mail" />
+                  <Button fx:id="resSelectPic" layoutX="183.0" layoutY="259.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="300.0" text="Vælg billede" />
+                  <Button fx:id="btnCreateRes" layoutX="183.0" layoutY="338.0" mnemonicParsing="false" text="Opret bruger" />
+                  <ChoiceBox fx:id="residentResidenceCB" layoutX="183.0" layoutY="32.0" prefWidth="300.0" />
+                  <ChoiceBox fx:id="residentWardCB" layoutX="183.0" layoutY="81.0" prefWidth="300.0" />
                </children></AnchorPane>
       </content>
     </Tab>
