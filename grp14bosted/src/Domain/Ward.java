@@ -8,10 +8,10 @@ public class Ward {
     private ArrayList<UUID> residents;
     private ArrayList<UUID> users;
     private String description, residenceName;
-    private int wardNumber;
+    private UUID wardID;
 
-    public Ward(int wardnumber, String description, String residenceName) {
-        this.wardNumber = wardnumber;
+    public Ward(UUID wardID, String description, String residenceName) {
+        this.wardID = wardID;
         this.description = description;
         this.residenceName = residenceName;
         this.residents = new ArrayList<>();
@@ -38,12 +38,12 @@ public class Ward {
         return this.description;
     }
 
-    public int getWardNumber() {
-        return this.wardNumber;
+    public UUID getWardNumber() {
+        return this.wardID;
     }
     
     @Override
     public String toString(){
-        return "Afdelling nummer: " + this.wardNumber + " beboer: " + this.residents.size() + " medarbejderer: " + this.users.size();
+        return residenceName + ": " + description;
     }
 }

@@ -24,7 +24,7 @@
                         <TextField layoutY="138.0" prefHeight="25.0" prefWidth="200.0" />
                         <ListView layoutX="231.0" layoutY="174.0" prefHeight="329.0" prefWidth="213.0" />
                         <Button fx:id="buttonWard" mnemonicParsing="false" text="Afdeling" />
-                        <ListView layoutY="173.0" prefHeight="329.0" prefWidth="200.0" />
+                        <ListView fx:id="residentsLV" layoutY="173.0" onMouseClicked="#goBack" prefHeight="329.0" prefWidth="200.0" />
                      </children>
                   </Pane>
                </children>
@@ -33,20 +33,21 @@
                <children>
                   <StackPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
+                        <Pane fx:id="paneWrite" visible="false">
+                           <children>
+                              <ChoiceBox fx:id="topicCB" layoutX="26.0" layoutY="80.0" prefWidth="150.0" />
+                              <DatePicker fx:id="diaryDate" layoutX="241.0" layoutY="172.0" />
+                              <Label layoutX="76.0" layoutY="44.0" text="Skriv" />
+                              <TextArea fx:id="diaryTA" layoutX="27.0" layoutY="126.0" prefHeight="406.0" prefWidth="200.0" />
+                              <Button fx:id="buttonSubmit" layoutX="311.0" layoutY="507.0" mnemonicParsing="false" text="Skriv dagbog" />
+                              <TextField fx:id="customTopicTF" layoutX="241.0" layoutY="80.0" prefHeight="25.0" prefWidth="174.0" visible="false" />
+                           </children>
+                        </Pane>
                         <Pane fx:id="paneMedicine" visible="false" />
                         <Pane fx:id="paneRead" visible="false">
                            <children>
                               <Label text="Read Diary Temp Label" />
-                              <ListView prefHeight="600.0" prefWidth="446.0" />
-                           </children>
-                        </Pane>
-                        <Pane fx:id="paneWrite" visible="false">
-                           <children>
-                              <ChoiceBox layoutX="14.0" layoutY="80.0" prefWidth="150.0" />
-                              <DatePicker layoutX="241.0" layoutY="172.0" />
-                              <Label layoutX="76.0" layoutY="44.0" text="Skriv" />
-                              <TextArea layoutX="27.0" layoutY="126.0" prefHeight="406.0" prefWidth="200.0" />
-                              <Button fx:id="buttonSubmit" layoutX="311.0" layoutY="507.0" mnemonicParsing="false" text="Skriv dagbog" />
+                              <ListView fx:id="diariesLV" prefHeight="600.0" prefWidth="446.0" />
                            </children>
                         </Pane>
                         <Pane fx:id="paneDiary">

@@ -10,8 +10,9 @@ public class User
     private UUID id;
     private Ward primaryWard;
     private ArrayList<Ward> secondaryWards;
+    private PassChecker passChecker;
 
-    public User(Privileges priv, UUID id, String name, String email, String password, String phoneNumber, Ward primaryWard, ArrayList<Ward> secondaryWards) 
+    public User(Privileges priv, UUID id, String name, String email, String password, String phoneNumber) 
     {
         this.id = id;
         this.priv = priv;
@@ -19,8 +20,6 @@ public class User
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;      
-        this.primaryWard = primaryWard;
-        this.secondaryWards = secondaryWards;
     }
 
     public Ward getPrimaryWard(){
@@ -42,5 +41,10 @@ public class User
     }
     public boolean hasPrivlege(Privilege priv) {
         return this.priv.hasPrivlege(priv);
+    }
+    
+    @Override
+    public String toString(){
+        return this.name;
     }
 }
