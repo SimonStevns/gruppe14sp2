@@ -17,8 +17,8 @@ public class Facade {
     final private Connect borgerCon = new Connect(Connect.BORGER_URL, "root", "");
     final private Connect medicinCon = new Connect(Connect.MEDICIN_URL, "root", "");
 
-    private static User curentUser;
-    private static UUID curentWardID;
+    private static User currentUser;
+    private static UUID currentWardID;
 
     public void newResident(UUID wardID, String name, String phone, String email, File pic) throws SQLException {
         bostedCon.openConnection();
@@ -85,8 +85,8 @@ public class Facade {
             bostedCon.openConnection();
             ResultSet rs = bostedCon.query(
                       "SELECT residents.residentID, name, phone "
-                    + "FROM `residents_" + curentWardID.toString() + "`"
-                    + "INNER JOIN residents ON `residents_" + curentWardID.toString() + "`.residentID = residents.residentID;");
+                    + "FROM `residents_" + currentWardID.toString() + "`"
+                    + "INNER JOIN residents ON `residents_" + currentWardID.toString() + "`.residentID = residents.residentID;");
             ObservableList<Resident> returnList = FXCollections.observableArrayList();
             while (rs.next()) {
                 Resident resident = new Resident(
@@ -107,7 +107,7 @@ public class Facade {
             bostedCon.openConnection();
             ResultSet rs = bostedCon.query(
                       "SELECT residentID, name, phone "
-                    + "FROM `residents_" + curentWardID.toString() + "`"
+                    + "FROM `residents_" + currentWardID.toString() + "`"
                     + "INNER JOIN ;");
             ObservableList<Resident> returnList = FXCollections.observableArrayList();
             while (rs.next()) {
@@ -141,9 +141,9 @@ public class Facade {
             boolean[] b = {
                 rs.getBoolean("VIEWOWN"), rs.getBoolean("VIEWALL"), rs.getBoolean("FIND"), rs.getBoolean("WRITEDIARY"), rs.getBoolean("DRUG"), rs.getBoolean("ADMIN")
             };
-            curentUser = new User(
+            currentUser = new User(
                     new Privileges(b), UUID.fromString(rs.getString("userID")), rs.getString("name"), rs.getString("email"), rs.getString("pass"), rs.getString("phone"));
-            curentWardID = UUID.fromString(rs.getString("primeWard"));
+            currentWardID = UUID.fromString(rs.getString("primeWard"));
             bostedCon.closeConnection();
             return true;
         }
@@ -153,15 +153,15 @@ public class Facade {
     }
 
     public boolean hasPrivlege(Privilege p) {
-        return this.curentUser.hasPrivlege(p);
+        return this.currentUser.hasPrivlege(p);
     }
 
     public void addDiaryEntry(UUID residentID, String topic, String text, LocalDate date) {
         try {
             bostedCon.openConnection();
-            PreparedStatement pstmt = bostedCon.getPreparedstmt("INSERT INTO `diaries_" + curentWardID.toString() + "` (residentID, authorID, topic, text, date ) VALUES (? ,? ,? ,?, ?)");
+            PreparedStatement pstmt = bostedCon.getPreparedstmt("INSERT INTO `diaries_" + currentWardID.toString() + "` (residentID, authorID, topic, text, date ) VALUES (? ,? ,? ,?, ?)");
             pstmt.setString(1, residentID.toString());
-            pstmt.setString(2, curentUser.getID().toString());
+            pstmt.setString(2, currentUser.getID().toString());
             pstmt.setString(3, topic);
             pstmt.setString(4, text);
             pstmt.setDate(5, java.sql.Date.valueOf(date));
@@ -176,7 +176,7 @@ public class Facade {
     public ObservableList<Diary> getResidentdiaries(UUID residentID) {
         try {
             bostedCon.openConnection();
-            PreparedStatement pstmt = bostedCon.getPreparedstmt("SELECT topic, text, date FROM `diaries_" + curentWardID.toString() + "` where residentID = ? ORDER BY date DESC ;");
+            PreparedStatement pstmt = bostedCon.getPreparedstmt("SELECT topic, text, date FROM `diaries_" + currentWardID.toString() + "` where residentID = ? ORDER BY date DESC ;");
             pstmt.setString(1, residentID.toString());
             ResultSet rs = pstmt.executeQuery();
 
@@ -286,12 +286,12 @@ public class Facade {
     }
     
     public UUID getCurrentWardID(){
-        return curentWardID;
+        return currentWardID;
     }
     
     @Override
     public String toString(){
-        return "" + this.curentUser + this.curentWardID;
+        return "" + this.currentUser + this.currentWardID;
     }
 
 }
