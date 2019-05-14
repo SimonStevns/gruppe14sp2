@@ -7,8 +7,6 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
@@ -62,7 +60,7 @@ public class MainFXMLController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        residents = facade.getResidents();
+        residents = facade.getCurrentResidents();
         residentsLV.setItems(residents);
         residentsLV.getSelectionModel().selectFirst();
         
@@ -94,11 +92,7 @@ public class MainFXMLController implements Initializable {
         buttonSubmit.setOnAction((ActionEvent e) -> {
 
             if (topicCB.getValue() != null && selectedResident() != null && !diaryTA.getText().isEmpty() ) {
-                if (diaryDate.getValue() == null) {
-                    facade.addDiaryEntry(selectedResidentUuid(), selectedTopic(), diaryTA.getText());
-                } else {
-                    facade.addDiaryEntry(selectedResidentUuid(), selectedTopic(), diaryTA.getText(), diaryDate.getValue());
-                }
+                facade.addDiaryEntry(selectedResidentUuid(), selectedTopic(), diaryTA.getText(), diaryDate.getValue());
                 clearDiary();
                 goBack();
                 showDialogAutoClose("Dagbog tilføjet", "For beboeren " + selectedResident().getName(), 2d);
@@ -188,6 +182,7 @@ public class MainFXMLController implements Initializable {
     
     private void clearDiary(){
         topicCB.getSelectionModel().selectFirst();
+        customTopicTF.clear();
         diaryTA.clear();
         diaryDate.setValue(LocalDate.now());
     }

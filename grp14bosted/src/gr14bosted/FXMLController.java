@@ -86,9 +86,9 @@ public class FXMLController implements Initializable {
             
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == buttonAdmin){
-                    Main.showAdmin(facade);
+                Main.showAdmin(this.facade);
             } else {
-                Main.showMain(facade);
+                Main.showMain(this.facade);
             }
         } catch (IOException ex) {}
     }
