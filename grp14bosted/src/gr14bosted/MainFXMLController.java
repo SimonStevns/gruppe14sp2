@@ -99,18 +99,19 @@ public class MainFXMLController implements Initializable {
 
         //Write Diary pane
         buttonSubmit.setOnAction((ActionEvent e) -> {
-
-            if (topicCB.getValue() != null && selectedResident() != null && !diaryTA.getText().isEmpty()) {
-                if (diaryDate.getValue() == null) {
-                    facade.addDiaryEntry(selectedResidentUuid(), selectedTopic(), diaryTA.getText());
+            if (validateInputDiary("Dagbog", diaryTA.getText(), 1000)) {
+                if (topicCB.getValue() != null && selectedResident() != null && !diaryTA.getText().isEmpty()) {
+                    if (diaryDate.getValue() == null) {
+                        facade.addDiaryEntry(selectedResidentUuid(), selectedTopic(), diaryTA.getText());
+                    } else {
+                        facade.addDiaryEntry(selectedResidentUuid(), selectedTopic(), diaryTA.getText(), diaryDate.getValue());
+                    }
+                    clearDiary();
+                    goBack();
+                    showDialogAutoClose("Dagbog tilføjet", "For beboeren " + selectedResident().getName(), 2d);
                 } else {
-                    facade.addDiaryEntry(selectedResidentUuid(), selectedTopic(), diaryTA.getText(), diaryDate.getValue());
+                    showDialog("Fejl", "Udfyld venligst alle felter");
                 }
-                clearDiary();
-                goBack();
-                showDialogAutoClose("Dagbog tilføjet", "For beboeren " + selectedResident().getName(), 2d);
-            } else {
-                showDialog("Fejl", "Udfyld venligst alle felter");
             }
         });
         diaryTA.setWrapText(true);
@@ -227,4 +228,13 @@ public class MainFXMLController implements Initializable {
         delay.setOnFinished(event -> alert.close());
         delay.play();
     }
+
+    private boolean validateInputDiary(String inputName, String input, int length) {
+        if (input.length() > length) {
+            showDialog("Fejl ved oprettelse", "Dagbogen er for lang, den skal fylde mindre end 1000 tegn");
+        }
+        return input.length() <= length;
+
+    }
+
 }

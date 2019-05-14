@@ -8,7 +8,7 @@ public class PassChecker {
        
     }
     
-    public boolean checkPassword(String password){
+    public static boolean checkPassword(String password){
         if (password.length() < 8){
             return false;
         } else {
