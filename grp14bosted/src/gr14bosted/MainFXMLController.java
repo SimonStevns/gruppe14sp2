@@ -92,7 +92,7 @@ public class MainFXMLController implements Initializable {
         buttonSubmit.setOnAction((ActionEvent e) -> {
             if (validateInputDiary("Dagbog", diaryTA.getText(), 1000)) {
                 if (topicCB.getValue() != null && selectedResident() != null && !diaryTA.getText().isEmpty()) {
-                    facade.addDiaryEntry(selectedResidentUuid(), selectedTopic(), diaryTA.getText());
+                    facade.addDiaryEntry(selectedResidentUuid(), selectedTopic(), diaryTA.getText(), diaryDate.getValue());
                     clearDiary();
                     goBack();
                     showDialogAutoClose("Dagbog tilføjet", "For beboeren " + selectedResident().getName(), 2d);
