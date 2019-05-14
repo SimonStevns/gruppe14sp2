@@ -16,7 +16,9 @@ public class User
         this.id = id;
         this.priv = priv;
         this.name = name;
-        this.email = email;      
+        this.email = email;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
     }
 
     public Ward getPrimaryWard(){

@@ -17,6 +17,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
@@ -47,14 +48,14 @@ public class AdminController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         btnCreateResidence.setOnAction(e -> {
-            if (residenceAllFieldsfilled()) {
+            if (residenceAllFieldsfilled() && validateInput("navn", residenceName.getText(), 255) && validateInput("adresse", residenceAddress.getText(), 255) && validateInput("telefonnummer", residencePhone.getText(), 255) && validateInput("email", residenceEmail.getText(), 255)) {
                 facade.addResidence(residenceName.getText(), residenceAddress.getText(), residencePhone.getText(), residenceEmail.getText());
                 residenceCreated();
             }
         });
 
         btnCreateWard.setOnAction(e -> {
-            if (wardAllFieldsfilled()) {
+            if (wardAllFieldsfilled() && validateInput("beskrivelse", wardDescription.getText(), 255) && validateInput("navn", wardName.getText(), 255)) {
                 Residence r = (Residence) wardCB.getValue();
                 facade.newWard(r.getId().toString(), wardDescription.getText(), wardName.getText());
                 wardCreated();
@@ -91,7 +92,7 @@ public class AdminController implements Initializable {
         });
 
         btnCreateRes.setOnAction((ActionEvent e) -> {
-            if (residentAllFieldsfilled()) {
+            if (residentAllFieldsfilled() && validateInput("navn", resName.getText(), 255) && validateInput("telefonnummer", resPhone.getText(), 255) && validateInput("email", resEmail.getText(), 255)) {
                 try {
                     Ward tempWard = (Ward) residentWardCB.getSelectionModel().getSelectedItem();
                     facade.newResident(tempWard.getWardNumber(), resName.getText(), resPhone.getText(), resEmail.getText(), resImage);
@@ -105,7 +106,7 @@ public class AdminController implements Initializable {
         });
 
         btnCreateUser.setOnAction((ActionEvent e) -> {
-            if (userAllFieldsfilled() && PassChecker.checkPassword(userPass.getText())) {
+            if (userAllFieldsfilled() && validateInput("Brugernavn",userName.getText(), 255) && validateInput("email", userEmail.getText(), 255) && validateInput("telefonnummer", userPhone.getText(), 255 ) && validatePass(userPass.getText())) {
                 try {
                     Ward temp = (Ward) userWardCB.getSelectionModel().getSelectedItem();
                     facade.newUser(temp.getWardNumber()
@@ -140,6 +141,22 @@ public class AdminController implements Initializable {
         FileChooser fc = new FileChooser();
         fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter(".jpg", "*.jpg"));
         return fc.showOpenDialog(null);
+    }
+    
+        private boolean validatePass(String input){
+        if (!PassChecker.checkPassword(input)){
+            showDialog("fejl ved oprettelse ", "Kodeordet skal minimum indeholde ét stort tegn, ét lille tegn, ét tal og være 8 cifre langt");
+        }
+        return true;
+        
+    }
+        
+    private boolean validateInput(String inputName,String input, int length){
+        if (input.length() > length){
+            showDialog("Fejl ved oprettelse", inputName + " er for langt, det skal fylde mindre end " + length + " tegn ");
+        }
+        return input.length() <= length;
+        
     }
 
     private boolean wardAllFieldsfilled() {
@@ -195,6 +212,15 @@ public class AdminController implements Initializable {
     public void setFacade(Facade f) {
         this.facade = f;
         System.out.println(this.facade);
+    }
+    
+     private void showDialog(String titel, String dialog){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(titel);
+        alert.setContentText(dialog);
+        alert.setHeaderText(null);
+        alert.setGraphic(null);
+        alert.show();
     }
 
 }

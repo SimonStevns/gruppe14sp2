@@ -75,7 +75,6 @@ public class Facade {
             pstmt.setString(1, userID.toString());
             pstmt.executeUpdate();
             pstmt.close();
-            
         }
         bostedCon.closeConnection();
     }
@@ -226,9 +225,8 @@ public class Facade {
             pstmt.setString(3, description);
             pstmt.setString(4, name);
             pstmt.executeUpdate();
-
             pstmt.close();
-
+          
             bostedCon.update(MessageFormat.format("CREATE TABLE IF NOT EXISTS `grp14bosted`.`residents_{0}` "
                     + "( `residentID` VARCHAR(36) NOT NULL PRIMARY KEY, `added` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP);", wardID));
             

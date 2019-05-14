@@ -63,7 +63,7 @@ public class MainFXMLController implements Initializable {
         residents = facade.getCurrentResidents();
         residentsLV.setItems(residents);
         residentsLV.getSelectionModel().selectFirst();
-        
+
         splitPane.lookupAll(".split-pane-divider").stream()
                 .forEach(div -> div.setMouseTransparent(true));
 
@@ -87,29 +87,30 @@ public class MainFXMLController implements Initializable {
             //to do
             animWardMenu();
         });
-        
+
         //Write Diary pane
         buttonSubmit.setOnAction((ActionEvent e) -> {
-
-            if (topicCB.getValue() != null && selectedResident() != null && !diaryTA.getText().isEmpty() ) {
-                facade.addDiaryEntry(selectedResidentUuid(), selectedTopic(), diaryTA.getText(), diaryDate.getValue());
-                clearDiary();
-                goBack();
-                showDialogAutoClose("Dagbog tilføjet", "For beboeren " + selectedResident().getName(), 2d);
-            } else {
-                showDialog("Fejl", "Udfyld venligst alle felter");
+            if (validateInputDiary("Dagbog", diaryTA.getText(), 1000)) {
+                if (topicCB.getValue() != null && selectedResident() != null && !diaryTA.getText().isEmpty()) {
+                    facade.addDiaryEntry(selectedResidentUuid(), selectedTopic(), diaryTA.getText());
+                    clearDiary();
+                    goBack();
+                    showDialogAutoClose("Dagbog tilføjet", "For beboeren " + selectedResident().getName(), 2d);
+                } else {
+                    showDialog("Fejl", "Udfyld venligst alle felter");
+                }
             }
         });
         diaryTA.setWrapText(true);
-        
+
         topicCB.setItems(FXCollections.observableArrayList(
                 "Fritid", "Familie", "Medicin", new Separator(), "Andet: "
         ));
         topicCB.getSelectionModel().selectFirst();
-        
-        topicCB.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>(){
+
+        topicCB.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
-            public void changed(ObservableValue ov, Number value, Number newValue){
+            public void changed(ObservableValue ov, Number value, Number newValue) {
                 if (newValue.intValue() + 1 == topicCB.getItems().size()) {
                     customTopicTF.setVisible(true);
                 } else {
@@ -117,10 +118,10 @@ public class MainFXMLController implements Initializable {
                 }
             }
         });
-        
+
         diarys = FXCollections.observableArrayList();
         diariesLV.setItems(diarys);
-        
+
         diaryDate.setValue(LocalDate.now());
         diaryDate.setShowWeekNumbers(true);
 
@@ -155,8 +156,8 @@ public class MainFXMLController implements Initializable {
             return residentsLV.selectionModelProperty().getValue().getSelectedItem();
         }
         return null;
-    }    
-    
+    }
+
     private UUID selectedResidentUuid() {
         if (selectedResident() != null) {
             return selectedResident().getID();
@@ -168,7 +169,7 @@ public class MainFXMLController implements Initializable {
         if (customTopicTF.isVisible() && customTopicTF.getText() != null) {
             return customTopicTF.getText();
         }
-        
+
         return (String) topicCB.getSelectionModel().getSelectedItem();
     }
 
@@ -179,15 +180,15 @@ public class MainFXMLController implements Initializable {
         paneWrite.setVisible(false);
         p.setVisible(true);
     }
-    
-    private void clearDiary(){
+
+    private void clearDiary() {
         topicCB.getSelectionModel().selectFirst();
         customTopicTF.clear();
         diaryTA.clear();
         diaryDate.setValue(LocalDate.now());
     }
-    
-    private void showDialog(String titel, String dialog){
+
+    private void showDialog(String titel, String dialog) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titel);
         alert.setContentText(dialog);
@@ -195,18 +196,26 @@ public class MainFXMLController implements Initializable {
         alert.setGraphic(null);
         alert.show();
     }
-    
-    private void showDialogAutoClose(String titel, String dialog, double duration){
+
+    private void showDialogAutoClose(String titel, String dialog, double duration) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titel);
         alert.setContentText(dialog);
         alert.setHeaderText(null);
         alert.setGraphic(null);
         alert.show();
-        
+
         PauseTransition delay = new PauseTransition(Duration.seconds(duration));
         delay.setOnFinished(event -> alert.close());
         delay.play();
+    }
+
+    private boolean validateInputDiary(String inputName, String input, int length) {
+        if (input.length() > length) {
+            showDialog("Fejl ved oprettelse", "Dagbogen er for lang, den skal fylde mindre end 1000 tegn");
+        }
+        return input.length() <= length;
+
     }
 
 }
