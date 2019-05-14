@@ -10,6 +10,8 @@ import javafx.collections.ObservableList;
 import java.util.UUID;
 import javafx.collections.FXCollections;
 import java.time.LocalDate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Facade {
 
@@ -19,17 +21,18 @@ public class Facade {
 
     private User user;
 
-    public void newResident(String name, String phone, String email, File pic) throws SQLException {
+    public void newResident(String name, String phone, String email, File pic, String ROW_NUMBER) throws SQLException {
         bostedCon.openConnection();
 
-        PreparedStatement pstmt = bostedCon.getPreparedstmt("INSERT INTO `residents` (`residentID`, `caseworkerID`, `name`, `email`, `phone`) VALUES (?, ?, ?, ?, ?);");
+        PreparedStatement pstmt = bostedCon.getPreparedstmt("INSERT INTO `residents` (`residentID`, `caseworkerID`, `name`, `email`, `phone`,`ROW_NUMBER`) VALUES (?, ?, ?, ?, ?);");
 
         pstmt.setString(1, UUID.randomUUID().toString());
         pstmt.setString(2, UUID.randomUUID().toString());
         pstmt.setString(3, name);
         pstmt.setString(4, email);
         pstmt.setString(5, phone);
-
+        pstmt.setString(6, ROW_NUMBER);
+        
         pstmt.executeUpdate();
         bostedCon.closeConnection();
 
@@ -58,8 +61,8 @@ public class Facade {
             pstmt.setInt(5, rs.getInt("privlegeID"));
             pstmt.setString(6, phone);
             pstmt.setString(7, "1");
-            pstmt.executeUpdate();        
-            pstmt.close();          
+            pstmt.executeUpdate();
+            pstmt.close();
             bostedCon.closeConnection();
 
         }
@@ -68,11 +71,11 @@ public class Facade {
     public ObservableList<Resident> getResidents() {
         try {
             bostedCon.openConnection();
-            ResultSet rs = bostedCon.query("SELECT residentID, name, phone FROM residents;");
+            ResultSet rs = bostedCon.query("SELECT residentID, name, phone, ROW_NUMBER FROM residents;");
             ObservableList<Resident> returnList = FXCollections.observableArrayList();
             while (rs.next()) {
                 Resident resident = new Resident(
-                        UUID.fromString(rs.getString("residentID")), rs.getString("name"), rs.getString("phone"));
+                        UUID.fromString(rs.getString("residentID")), rs.getString("name"), rs.getString("phone"), rs.getString("ROW_NUMBER"));
                 returnList.add(resident);
             }
             return returnList;
@@ -238,6 +241,7 @@ public class Facade {
     }
 
     public ObservableList<Residence> getResidences() {
+
         try {
             bostedCon.openConnection();
             ObservableList<Residence> returnList = FXCollections.observableArrayList();
@@ -270,6 +274,44 @@ public class Facade {
             bostedCon.closeConnection();
         }
         return returnList;
+    }
+
+    public String getBorgerRowNum(String cpr) {
+        try {
+            borgerCon.openConnection();
+
+            ResultSet rs = borgerCon.query("SELECT `ROW_NUMBER` FROM borger WHERE cpr = " + cpr);
+            String s = rs.getString("ROW_NUMBER");
+            rs.close();
+            return s;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Facade.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            borgerCon.closeConnection();
+        }
+        return null;
+    }
+
+    public String getjournal(String s) {
+        try {
+            borgerCon.openConnection();
+
+            String journal = "";
+            
+            ResultSet rs = borgerCon.query("SELECT `disease` FROM `borger` WHERE ROW_NUMBER = " + s);
+            while (rs.next()){
+            journal = rs.getString("disease");
+            }
+            rs.close();
+            return journal;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Facade.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            borgerCon.closeConnection();
+        }
+        return null;
     }
 
 }

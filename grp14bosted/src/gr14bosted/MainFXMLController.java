@@ -22,11 +22,13 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
@@ -48,11 +50,15 @@ public class MainFXMLController implements Initializable {
     @FXML
     private ListView<Resident> residentsLV;
     @FXML
+    private Label journal;
+    @FXML
     private ListView<Diary> diariesLV;
     @FXML
     private ChoiceBox topicCB;
     @FXML
     private TextField customTopicTF;
+    @FXML
+    private TextArea journalTA;
 
     private ObservableList<Resident> residents;
     private ObservableList<Diary> diarys;
@@ -63,9 +69,11 @@ public class MainFXMLController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         residents = facade.getResidents();
+
         residentsLV.setItems(residents);
+
         residentsLV.getSelectionModel().selectFirst();
-        
+
         splitPane.lookupAll(".split-pane-divider").stream()
                 .forEach(div -> div.setMouseTransparent(true));
 
@@ -86,14 +94,13 @@ public class MainFXMLController implements Initializable {
             setVisablePane(paneMedicine);
         });
         buttonWard.setOnAction((ActionEvent e) -> {
-            //to do
             animWardMenu();
         });
-        
+
         //Write Diary pane
         buttonSubmit.setOnAction((ActionEvent e) -> {
 
-            if (topicCB.getValue() != null && selectedResident() != null && !diaryTA.getText().isEmpty() ) {
+            if (topicCB.getValue() != null && selectedResident() != null && !diaryTA.getText().isEmpty()) {
                 if (diaryDate.getValue() == null) {
                     facade.addDiaryEntry(selectedResidentUuid(), selectedTopic(), diaryTA.getText());
                 } else {
@@ -107,15 +114,15 @@ public class MainFXMLController implements Initializable {
             }
         });
         diaryTA.setWrapText(true);
-        
+
         topicCB.setItems(FXCollections.observableArrayList(
                 "Fritid", "Familie", "Medicin", new Separator(), "Andet: "
         ));
         topicCB.getSelectionModel().selectFirst();
-        
-        topicCB.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>(){
+
+        topicCB.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
-            public void changed(ObservableValue ov, Number value, Number newValue){
+            public void changed(ObservableValue ov, Number value, Number newValue) {
                 if (newValue.intValue() + 1 == topicCB.getItems().size()) {
                     customTopicTF.setVisible(true);
                 } else {
@@ -123,13 +130,13 @@ public class MainFXMLController implements Initializable {
                 }
             }
         });
-        
+
         diarys = FXCollections.observableArrayList();
         diariesLV.setItems(diarys);
-        
+
         diaryDate.setValue(LocalDate.now());
         diaryDate.setShowWeekNumbers(true);
-
+        journalTA.setWrapText(true);
     }
 
     public void animWardMenu() {
@@ -154,6 +161,13 @@ public class MainFXMLController implements Initializable {
 
     public void goBack() {
         setVisablePane(paneDiary);
+        showJournal();
+    }
+
+    public void showJournal() {
+        journalTA.clear();
+        Resident res = residentsLV.getSelectionModel().getSelectedItem();     
+        journalTA.appendText(facade.getjournal(res.GetROW()));
     }
 
     private Resident selectedResident() {
@@ -161,8 +175,8 @@ public class MainFXMLController implements Initializable {
             return residentsLV.selectionModelProperty().getValue().getSelectedItem();
         }
         return null;
-    }    
-    
+    }
+
     private UUID selectedResidentUuid() {
         if (selectedResident() != null) {
             return selectedResident().getID();
@@ -174,7 +188,7 @@ public class MainFXMLController implements Initializable {
         if (customTopicTF.isVisible() && customTopicTF.getText() != null) {
             return customTopicTF.getText();
         }
-        
+
         return (String) topicCB.getSelectionModel().getSelectedItem();
     }
 
@@ -185,14 +199,14 @@ public class MainFXMLController implements Initializable {
         paneWrite.setVisible(false);
         p.setVisible(true);
     }
-    
-    private void clearDiary(){
+
+    private void clearDiary() {
         topicCB.getSelectionModel().selectFirst();
         diaryTA.clear();
         diaryDate.setValue(LocalDate.now());
     }
-    
-    private void showDialog(String titel, String dialog){
+
+    private void showDialog(String titel, String dialog) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titel);
         alert.setContentText(dialog);
@@ -200,18 +214,17 @@ public class MainFXMLController implements Initializable {
         alert.setGraphic(null);
         alert.show();
     }
-    
-    private void showDialogAutoClose(String titel, String dialog, double duration){
+
+    private void showDialogAutoClose(String titel, String dialog, double duration) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titel);
         alert.setContentText(dialog);
         alert.setHeaderText(null);
         alert.setGraphic(null);
         alert.show();
-        
+
         PauseTransition delay = new PauseTransition(Duration.seconds(duration));
         delay.setOnFinished(event -> alert.close());
         delay.play();
     }
-
 }

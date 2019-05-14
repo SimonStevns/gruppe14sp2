@@ -14,7 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import java.sql.SQLException; 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,9 +38,6 @@ public class FXMLController implements Initializable {
     private PasswordField password;
     @FXML
     private Label errorLabel;
-    
-    private Connect bostedCon = new Connect(Connect.BOSTED_URL, "root", "");
-    private Connect borgerCon = new Connect(Connect.BORGER_URL, "root", "");
 
     private Facade facade = new Facade();
 
@@ -67,16 +64,7 @@ public class FXMLController implements Initializable {
                 displayError("Noget gik galt, prøv igen");
                 ex.printStackTrace();
             }
-            try {
-            borgerCon.openConnection();
-                System.out.println(" hej med dig borgers");
-            } catch (SQLException ex) {
-                Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println("nej");
-            }
-            
         });
-
         errorLabel.setVisible(false);
     }
 
@@ -84,24 +72,25 @@ public class FXMLController implements Initializable {
         errorLabel.setVisible(true);
         errorLabel.setText(error);
     }
-    
-    private void selectShow(){
+
+    private void selectShow() {
         try {
             Alert alert = new Alert(AlertType.CONFIRMATION);
             alert.setHeaderText(null);
             alert.setContentText("Hvilken side vil du tilgå?");
-            
+
             ButtonType buttonAdmin = new ButtonType("Admin");
             ButtonType buttonMain = new ButtonType("Hovedside");
-            
+
             alert.getButtonTypes().setAll(buttonAdmin, buttonMain);
-            
+
             Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == buttonAdmin){
-                    Main.showAdmin(facade);
+            if (result.get() == buttonAdmin) {
+                Main.showAdmin(facade);
             } else {
                 Main.showMain(facade);
             }
-        } catch (IOException ex) {}
+        } catch (IOException ex) {
+        }
     }
 }

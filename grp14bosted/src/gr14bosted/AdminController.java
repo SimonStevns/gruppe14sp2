@@ -30,7 +30,7 @@ import javafx.stage.FileChooser;
 public class AdminController implements Initializable {
 
     @FXML
-    private TextField userName, userEmail, userPhone, userPass, resPhone, resEmail, resName;
+    private TextField userName, userEmail, userPhone, userPass, resPhone, resEmail, resName,rescpr;
     @FXML
     private TextField residenceName, residenceAddress, residencePhone, residenceEmail, wardName, wardDescription;
     @FXML
@@ -93,7 +93,7 @@ public class AdminController implements Initializable {
         btnCreateRes.setOnAction((ActionEvent e) -> {
             if (residentAllFieldsfilled()) {
                 try {
-                    facade.newResident(resName.getText(), resPhone.getText(), resEmail.getText(), currentPic);
+                    facade.newResident(resName.getText(), resPhone.getText(), resEmail.getText(), currentPic,facade.getBorgerRowNum(rescpr.getText()));
                 } catch (SQLException ex) {
                     Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
                 }

@@ -22,8 +22,8 @@
                   <Pane>
                      <children>
                         <TextField layoutY="138.0" prefHeight="25.0" prefWidth="200.0" />
-                        <ListView layoutX="231.0" layoutY="174.0" prefHeight="329.0" prefWidth="213.0" />
-                        <Button fx:id="buttonWard" mnemonicParsing="false" text="Afdeling" />
+                        <Button fx:id="buttonWard" mnemonicParsing="false" onAction="#showJournal" text="Afdeling" />
+                        <TextArea fx:id="journalTA" editable="false" layoutX="231.0" layoutY="174.0" prefHeight="329.0" prefWidth="213.0" />
                         <ListView fx:id="residentsLV" layoutY="173.0" onMouseClicked="#goBack" prefHeight="329.0" prefWidth="200.0" />
                      </children>
                   </Pane>
