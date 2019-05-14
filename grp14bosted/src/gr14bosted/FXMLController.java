@@ -85,10 +85,10 @@ public class FXMLController implements Initializable {
             alert.getButtonTypes().setAll(buttonAdmin, buttonMain);
 
             Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == buttonAdmin) {
-                Main.showAdmin(facade);
+            if (result.get() == buttonAdmin){
+                Main.showAdmin(this.facade);
             } else {
-                Main.showMain(facade);
+                Main.showMain(this.facade);
             }
         } catch (IOException ex) {
         }

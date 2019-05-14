@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gr14bosted;
 
 import Domain.Facade;
@@ -44,8 +39,9 @@ public class AdminController implements Initializable {
 
     private ObservableList<Ward> userWards = FXCollections.observableArrayList();
     private ObservableList<Ward> residentWards = FXCollections.observableArrayList();
-
-    private File currentPic = null;
+    private ObservableList<Residence> residences = FXCollections.observableArrayList();
+    
+    private File userImage, resImage = null;
 
     private Facade facade = new Facade();
 
@@ -54,6 +50,7 @@ public class AdminController implements Initializable {
         btnCreateResidence.setOnAction(e -> {
             if (residenceAllFieldsfilled() && validateInput("navn", residenceName.getText(), 255) && validateInput("adresse", residenceAddress.getText(), 255) && validateInput("telefonnummer", residencePhone.getText(), 255) && validateInput("email", residenceEmail.getText(), 255)) {
                 facade.addResidence(residenceName.getText(), residenceAddress.getText(), residencePhone.getText(), residenceEmail.getText());
+                residenceCreated();
             }
         });
 
@@ -61,55 +58,69 @@ public class AdminController implements Initializable {
             if (wardAllFieldsfilled() && validateInput("beskrivelse", wardDescription.getText(), 255) && validateInput("navn", wardName.getText(), 255)) {
                 Residence r = (Residence) wardCB.getValue();
                 facade.newWard(r.getId().toString(), wardDescription.getText(), wardName.getText());
+                wardCreated();
             }
         });
 
         //ChoiceBoxes
         ObservableList<Residence> residences = facade.getResidences();
-        wardCB.setItems(residences);
-        wardCB.getSelectionModel().selectFirst();
-        userResidenceCB.setItems(residences);
-        userResidenceCB.getSelectionModel().selectFirst();
-        residentResidenceCB.setItems(residences);
-        residentResidenceCB.getSelectionModel().selectLast();
+        ChoiceBox[] cbs = {wardCB, userResidenceCB, residentResidenceCB};
+        for (ChoiceBox cb : cbs) {
+            cb.setItems(residences);
+            cb.getSelectionModel().selectFirst();
+        }
+        
+        userWards = facade.getWards(residences.get(0).getId().toString());
+        residentWards = facade.getWards(residences.get(0).getId().toString());
+        userWardCB.setItems(userWards);
+        residentWardCB.setItems(residentWards);
 
         userResidenceCB.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue ov, Number value, Number newValue) {
-                setUserWards(facade.getWards(residences.get(newValue.intValue()).getId().toString()));
+                userWards = facade.getWards(residences.get(newValue.intValue()).getId().toString());
+                userWardCB.setItems(userWards);
             }
         });
 
         residentResidenceCB.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue ov, Number value, Number newValue) {
-                setResWard(facade.getWards(residences.get(newValue.intValue()).getId().toString()));
+                residentWards = facade.getWards(residences.get(newValue.intValue()).getId().toString());
+                residentWardCB.setItems(userWards);
             }
         });
-
-        userWards = facade.getWards(residences.get(0).getId().toString());
-        residentWards = facade.getWards(residences.get(0).getId().toString());
-        userWardCB.setItems(userWards);
-        residentWardCB.setItems(residentWards);
 
         btnCreateRes.setOnAction((ActionEvent e) -> {
             if (residentAllFieldsfilled() && validateInput("navn", resName.getText(), 255) && validateInput("telefonnummer", resPhone.getText(), 255) && validateInput("email", resEmail.getText(), 255)) {
                 try {
-                    facade.newResident(resName.getText(), resPhone.getText(), resEmail.getText(), currentPic,facade.getBorgerRowNum(rescpr.getText()));
+                    Ward tempWard = (Ward) residentWardCB.getSelectionModel().getSelectedItem();
+                    facade.newResident(tempWard.getWardNumber(), resName.getText(), resPhone.getText(), resEmail.getText(), resImage);
+                    residentCreated();
                 } catch (SQLException ex) {
                     Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            } else {
+                System.out.println("");
             }
-        });
-
-        resSelectPic.setOnAction((ActionEvent e) -> {
-            openFileSelector();
         });
 
         btnCreateUser.setOnAction((ActionEvent e) -> {
             if (userAllFieldsfilled() && validateInput("Brugernavn",userName.getText(), 255) && validateInput("email", userEmail.getText(), 255) && validateInput("telefonnummer", userPhone.getText(), 255 ) && validatePass(userPass.getText())) {
                 try {
-                    facade.newUser(userName.getText(), userPass.getText(), userEmail.getText(), userPhone.getText(), privOwn.isSelected(), privAll.isSelected(), privFind.isSelected(), privWrite.isSelected(), privDrugs.isSelected(), privAdmin.isSelected());
+                    Ward temp = (Ward) userWardCB.getSelectionModel().getSelectedItem();
+                    facade.newUser(temp.getWardNumber()
+                            , userName.getText()
+                            , userPass.getText()
+                            , userEmail.getText()
+                            , userPhone.getText()
+                            , privOwn.isSelected()
+                            , privAll.isSelected()
+                            , privFind.isSelected()
+                            , privWrite.isSelected()
+                            , privDrugs.isSelected()
+                            , privAdmin.isSelected());
+                    userCreated();
                 } catch (SQLException ex) {
                     Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -117,16 +128,19 @@ public class AdminController implements Initializable {
         });
 
         userSelectPic.setOnAction((ActionEvent e) -> {
-            openFileSelector();
+            userImage = openFileSelector();
+        });
+        
+        resSelectPic.setOnAction((ActionEvent e) -> {
+            resImage = openFileSelector();
         });
 
     }
 
-    private void openFileSelector() {
-        facade.getResidents();
+    private File openFileSelector() {
         FileChooser fc = new FileChooser();
-        fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("jpg bilede", "*.jpg"));
-        currentPic = fc.showOpenDialog(null);
+        fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter(".jpg", "*.jpg"));
+        return fc.showOpenDialog(null);
     }
     
         private boolean validatePass(String input){
@@ -157,25 +171,47 @@ public class AdminController implements Initializable {
         boolean allCBUnSelected = !privOwn.isSelected() && !privAll.isSelected() && !privFind.isSelected()
                 && !privWrite.isSelected() && !privDrugs.isSelected() && !privAdmin.isSelected();
         return (!allCBUnSelected && !userEmail.getText().isEmpty() && !userName.getText().isEmpty() && !userPass.getText().isEmpty()
-                && !userPhone.getText().isEmpty() && currentPic != null);
+                && !userPhone.getText().isEmpty() && userImage != null);
     }
 
     private boolean residentAllFieldsfilled() {
-        return currentPic != null && !resName.getText().isEmpty() && !resPhone.getText().isEmpty() && !resEmail.getText().isEmpty();
+        return residentWardCB.getSelectionModel().getSelectedItem() != null && resImage != null &&!resName.getText().isEmpty() && !resPhone.getText().isEmpty() && !resEmail.getText().isEmpty();
     }
-
-    private void setUserWards(ObservableList<Ward> wards) {
-        userWardCB.setItems(wards);
-        userWardCB.getSelectionModel().selectFirst();
+    
+    private void residenceCreated(){
+        residenceName.clear();
+        residenceAddress.clear();
+        residencePhone.clear();
+        residenceEmail.clear();
     }
-
-    private void setResWard(ObservableList<Ward> wards) {
-        residentWardCB.setItems(wards);
-        residentWardCB.getSelectionModel().selectFirst();
+    
+    private void wardCreated(){
+        wardDescription.clear();
+        wardName.clear();
+    }
+    
+    private void userCreated(){
+        userEmail.clear();
+        userName.clear();
+        userPass.clear();
+        userPhone.clear();
+        userImage = null;
+        CheckBox[] cbs = {privOwn, privAll, privFind, privWrite, privDrugs, privAdmin};
+        for (CheckBox cb : cbs) {
+            cb.setSelected(false);
+        }
+    }
+    
+    private void residentCreated(){
+        resEmail.clear();
+        resName.clear();
+        resPhone.clear();
+        resImage = null;
     }
 
     public void setFacade(Facade f) {
         this.facade = f;
+        System.out.println(this.facade);
     }
     
      private void showDialog(String titel, String dialog){

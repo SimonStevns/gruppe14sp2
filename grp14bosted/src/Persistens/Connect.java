@@ -47,6 +47,11 @@ public class Connect {
             se.printStackTrace();
         }
     }
+    public void update(String sql) throws SQLException{
+        Statement stmt = conn.createStatement();
+        stmt.executeUpdate(sql);
+        stmt.close();
+    }
 
     public ResultSet query(String sqlQuery) throws SQLException {
         Statement stmt = conn.createStatement();

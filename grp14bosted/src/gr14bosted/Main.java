@@ -27,10 +27,6 @@ public class Main extends Application {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
     
     public static void showLogin() throws IOException{
         FXMLLoader loader = new FXMLLoader();
@@ -46,8 +42,8 @@ public class Main extends Application {
         loader.setLocation(Main.class.getResource("MainFXML.fxml"));
         AnchorPane layout = loader.load();
         
-        MainFXMLController mainController = loader.getController();
-        mainController.setFacade(f);
+        MainFXMLController mc = loader.getController();
+        mc.setFacade(f);
         
         Scene scene = new Scene(layout);
         primaryStage.setScene(scene);
