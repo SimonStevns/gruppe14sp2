@@ -20,13 +20,16 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.util.Callback;
 import javafx.util.Duration;
 
 public class MainFXMLController implements Initializable {
@@ -61,6 +64,24 @@ public class MainFXMLController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         residents = facade.getCurrentResidents();
+        residentsLV.setCellFactory(residentListView -> new ListCell<Resident>(){
+            private ImageView imageView = new ImageView();
+            @Override
+            protected void updateItem(Resident resident, boolean empty){
+                super.updateItem(resident, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else if (resident.getImage() == null) {
+                    setText(resident.getName());
+                    setGraphic(null);
+                } else {
+                    imageView.setImage(resident.getImage());
+                    setText(resident.getName());
+                    setGraphic(imageView);
+                }
+            }
+        });
         residentsLV.setItems(residents);
         residentsLV.getSelectionModel().selectFirst();
 
