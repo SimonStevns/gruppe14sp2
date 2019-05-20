@@ -5,6 +5,7 @@ import Domain.PassChecker;
 import Domain.Residence;
 import Domain.Ward;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -99,6 +100,8 @@ public class AdminController implements Initializable {
                     residentCreated();
                 } catch (SQLException ex) {
                     Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
             }
@@ -113,6 +116,7 @@ public class AdminController implements Initializable {
                             , userPass.getText()
                             , userEmail.getText()
                             , userPhone.getText()
+                            , userImage
                             , privOwn.isSelected()
                             , privAll.isSelected()
                             , privFind.isSelected()
@@ -122,6 +126,8 @@ public class AdminController implements Initializable {
                     userCreated();
                 } catch (SQLException ex) {
                     Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (FileNotFoundException ex){
+                    
                 }
             }
         });

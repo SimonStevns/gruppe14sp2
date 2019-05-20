@@ -2,6 +2,8 @@ package Domain;
 
 import Persistens.Connect;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,6 +12,7 @@ import javafx.collections.ObservableList;
 import java.util.UUID;
 import javafx.collections.FXCollections;
 import java.time.LocalDate;
+import javafx.scene.image.Image;
 
 public class Facade {
 
@@ -20,20 +23,24 @@ public class Facade {
     private static User currentUser;
     private static UUID currentWardID;
 
-    public void newResident(UUID wardID, String name, String phone, String email, File pic, String cpr) throws SQLException {
+
+    public void newResident(UUID wardID, String name, String phone, String email, File pic, String cpr) throws SQLException, FileNotFoundException {
         bostedCon.openConnection();
 
-        PreparedStatement pstmt = bostedCon.getPreparedstmt("INSERT INTO `residents` (`residentID`, `name`, `email`, `phone`, `cpr`) VALUES (?, ?, ?, ?, ?);");
-
+        PreparedStatement pstmt = bostedCon.getPreparedstmt("INSERT INTO `residents` (`residentID`, `name`, `email`, `phone`, `picture`, `cpr`) VALUES (?, ?, ?, ?, ?, ?);");
+        
         String residentID = UUID.randomUUID().toString();
-
+        FileInputStream fis = new FileInputStream(pic);
+        
         pstmt.setString(1, residentID);
         pstmt.setString(2, name);
         pstmt.setString(3, email);
         pstmt.setString(4, phone);
-        pstmt.setString(5, cpr);
+        pstmt.setBlob(5, fis, pic.length());
+        pstmt.setString(6, cpr);
         pstmt.executeUpdate();
         pstmt.close();
+
         pstmt = bostedCon.getPreparedstmt("INSERT INTO `residents_" + wardID.toString() + "` (`residentID`) VALUES (?)");
         pstmt.setString(1, residentID);
         pstmt.executeUpdate();
@@ -42,8 +49,8 @@ public class Facade {
 
     }
 
-    public void newUser(UUID wardID, String name, String pass, String email, String phone, boolean own,
-            boolean all, boolean find, boolean write, boolean drug, boolean admin) throws SQLException {
+    public void newUser(UUID wardID, String name, String pass, String email, String phone, File pic,
+            boolean own, boolean all, boolean find, boolean write, boolean drug, boolean admin) throws SQLException, FileNotFoundException {
         bostedCon.openConnection();
         PreparedStatement pstmt = bostedCon.getPreparedstmt("SELECT privlegeID FROM privleges "
                 + "WHERE VIEWOWN = ? AND VIEWALL = ? AND FIND = ? AND WRITEDIARY = ? AND DRUG = ? AND ADMIN = ?;");
@@ -57,10 +64,12 @@ public class Facade {
         ResultSet rs = pstmt.executeQuery();
 
         if (rs.next()) {
-            pstmt = bostedCon.getPreparedstmt("INSERT INTO users (userID, pass, email, name, privlegeID, phone, primeWard) VALUES (?, ?, ?, ?, ?, ?, ?);");
 
+            pstmt = bostedCon.getPreparedstmt("INSERT INTO users (userID, pass, email, name, privlegeID, phone, primeWard, picture) VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
+            
             UUID userID = UUID.randomUUID();
-
+            FileInputStream fis = new FileInputStream(pic);
+            
             pstmt.setString(1, userID.toString());
             pstmt.setString(2, pass);
             pstmt.setString(3, email);
@@ -68,6 +77,7 @@ public class Facade {
             pstmt.setInt(5, rs.getInt("privlegeID"));
             pstmt.setString(6, phone);
             pstmt.setString(7, wardID.toString());
+            pstmt.setBlob(8, fis, pic.length());
             pstmt.executeUpdate();
             pstmt.close();
 
@@ -83,24 +93,55 @@ public class Facade {
         try {
             bostedCon.openConnection();
             ResultSet rs = bostedCon.query(
-                    "SELECT residents.residentID, name, phone , cpr "
-                    + "FROM `residents_" + currentWardID.toString() + "` "
-                    + "INNER JOIN residents ON `residents_" + currentWardID.toString() + "` .residentID = residents.residentID;");
+
+                      "SELECT residents.residentID, residents.picture ,name, phone, cpr "
+                    + "FROM `residents_" + currentWardID.toString() + "`"
+                    + "INNER JOIN residents ON `residents_" + currentWardID.toString() + "`.residentID = residents.residentID "
+                    + "WHERE residents.picture IS NOT NULL;");
             ObservableList<Resident> returnList = FXCollections.observableArrayList();
             while (rs.next()) {
                 Resident resident = new Resident(
-                        UUID.fromString(rs.getString("residentID")), rs.getString("name"), rs.getString("phone"), rs.getString("cpr"));
-
+                        UUID.fromString(rs.getString("residentID"))
+                        , new Image(rs.getBlob("picture").getBinaryStream(), 50, 50, false, false)
+                        , rs.getString("name")
+                        , rs.getString("phone")
+                        , rs.getString("cpr"));
                 returnList.add(resident);
             }
             return returnList;
 
         } catch (SQLException ex) {
+            ex.printStackTrace();
+          
         } finally {
             bostedCon.closeConnection();
         }
         return null;
-    }
+
+    }    
+    
+//    public ObservableList<Resident> getResidents(UUID wardID) {
+//        try {
+//            bostedCon.openConnection();
+//            ResultSet rs = bostedCon.query(
+//                      "SELECT residentID, name, phone "
+//                    + "FROM `residents_" + currentWardID.toString() + "`"
+//                    + "INNER JOIN ;");
+//            ObservableList<Resident> returnList = FXCollections.observableArrayList();
+//            while (rs.next()) {
+//                Resident resident = new Resident(
+//                        UUID.fromString(rs.getString("residentID")), rs.getString("name"), rs.getString("phone"));
+//                returnList.add(resident);
+//            }
+//            return returnList;
+//
+//        } catch (SQLException ex) {
+//        } finally {
+//            bostedCon.closeConnection();
+//        }
+//        return null;
+//    }
+
 
     public boolean setUser(String email, String pass) throws SQLException {
         bostedCon.openConnection();
@@ -305,4 +346,9 @@ public class Facade {
         }
         return null;
     }
+
+    public void newUser(UUID wardNumber, String text, String text0, String text1, String text2, boolean selected, boolean selected0, boolean selected1, boolean selected2, boolean selected3, boolean selected4) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }
