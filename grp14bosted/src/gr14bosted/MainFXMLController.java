@@ -40,7 +40,7 @@ public class MainFXMLController implements Initializable {
     @FXML
     private SplitPane splitPane;
     @FXML
-    private TextArea diaryTA;
+    private TextArea diaryTA,journalTA;
     @FXML
     private DatePicker diaryDate;
     @FXML
@@ -124,7 +124,7 @@ public class MainFXMLController implements Initializable {
 
         diaryDate.setValue(LocalDate.now());
         diaryDate.setShowWeekNumbers(true);
-
+        journalTA.setWrapText(true);
     }
 
     public void animWardMenu() {
@@ -149,6 +149,12 @@ public class MainFXMLController implements Initializable {
 
     public void goBack() {
         setVisablePane(paneDiary);
+        showJournal();
+    }
+    public void showJournal() {
+        journalTA.clear();
+        Resident res = residentsLV.getSelectionModel().getSelectedItem();  
+        journalTA.appendText(facade.getjournal(res.getCPR()));
     }
 
     private Resident selectedResident() {

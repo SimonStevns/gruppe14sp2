@@ -22,11 +22,11 @@
                   <Pane>
                      <children>
                         <TextField layoutY="138.0" prefHeight="25.0" prefWidth="200.0" />
-                        <ListView layoutX="231.0" layoutY="174.0" prefHeight="329.0" prefWidth="213.0" />
                         <Button fx:id="buttonWard" mnemonicParsing="false" text="Afdeling" />
                         <ListView fx:id="residentsLV" layoutY="173.0" onMouseClicked="#goBack" prefHeight="329.0" prefWidth="200.0" />
                      </children>
                   </Pane>
+                  <TextArea fx:id="journalTA" editable="false" layoutX="232.0" layoutY="172.0" prefHeight="329.0" prefWidth="212.0" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">

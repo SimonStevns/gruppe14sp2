@@ -20,20 +20,20 @@ public class Facade {
     private static User currentUser;
     private static UUID currentWardID;
 
-    public void newResident(UUID wardID, String name, String phone, String email, File pic) throws SQLException {
+    public void newResident(UUID wardID, String name, String phone, String email, File pic, String cpr) throws SQLException {
         bostedCon.openConnection();
 
-        PreparedStatement pstmt = bostedCon.getPreparedstmt("INSERT INTO `residents` (`residentID`, `name`, `email`, `phone`) VALUES (?, ?, ?, ?);");
-        
+        PreparedStatement pstmt = bostedCon.getPreparedstmt("INSERT INTO `residents` (`residentID`, `name`, `email`, `phone`, `cpr`) VALUES (?, ?, ?, ?, ?);");
+
         String residentID = UUID.randomUUID().toString();
-        
+
         pstmt.setString(1, residentID);
         pstmt.setString(2, name);
         pstmt.setString(3, email);
         pstmt.setString(4, phone);
+        pstmt.setString(5, cpr);
         pstmt.executeUpdate();
         pstmt.close();
-        System.out.println("skud ud");
         pstmt = bostedCon.getPreparedstmt("INSERT INTO `residents_" + wardID.toString() + "` (`residentID`) VALUES (?)");
         pstmt.setString(1, residentID);
         pstmt.executeUpdate();
@@ -55,12 +55,12 @@ public class Facade {
         pstmt.setBoolean(5, drug);
         pstmt.setBoolean(6, admin);
         ResultSet rs = pstmt.executeQuery();
-        
+
         if (rs.next()) {
             pstmt = bostedCon.getPreparedstmt("INSERT INTO users (userID, pass, email, name, privlegeID, phone, primeWard) VALUES (?, ?, ?, ?, ?, ?, ?);");
-            
+
             UUID userID = UUID.randomUUID();
-            
+
             pstmt.setString(1, userID.toString());
             pstmt.setString(2, pass);
             pstmt.setString(3, email);
@@ -70,7 +70,7 @@ public class Facade {
             pstmt.setString(7, wardID.toString());
             pstmt.executeUpdate();
             pstmt.close();
-            
+
             pstmt = bostedCon.getPreparedstmt("INSERT INTO `users_" + wardID.toString() + "` (`userID`) VALUES (?)");
             pstmt.setString(1, userID.toString());
             pstmt.executeUpdate();
@@ -83,35 +83,14 @@ public class Facade {
         try {
             bostedCon.openConnection();
             ResultSet rs = bostedCon.query(
-                      "SELECT residents.residentID, name, phone "
-                    + "FROM `residents_" + currentWardID.toString() + "`"
-                    + "INNER JOIN residents ON `residents_" + currentWardID.toString() + "`.residentID = residents.residentID;");
+                    "SELECT residents.residentID, name, phone , cpr "
+                    + "FROM `residents_" + currentWardID.toString() + "` "
+                    + "INNER JOIN residents ON `residents_" + currentWardID.toString() + "` .residentID = residents.residentID;");
             ObservableList<Resident> returnList = FXCollections.observableArrayList();
             while (rs.next()) {
                 Resident resident = new Resident(
-                        UUID.fromString(rs.getString("residentID")), rs.getString("name"), rs.getString("phone"));
-                returnList.add(resident);
-            }
-            return returnList;
+                        UUID.fromString(rs.getString("residentID")), rs.getString("name"), rs.getString("phone"), rs.getString("cpr"));
 
-        } catch (SQLException ex) {
-        } finally {
-            bostedCon.closeConnection();
-        }
-        return null;
-    }    
-    
-    public ObservableList<Resident> getResidents(UUID wardID) {
-        try {
-            bostedCon.openConnection();
-            ResultSet rs = bostedCon.query(
-                      "SELECT residentID, name, phone "
-                    + "FROM `residents_" + currentWardID.toString() + "`"
-                    + "INNER JOIN ;");
-            ObservableList<Resident> returnList = FXCollections.observableArrayList();
-            while (rs.next()) {
-                Resident resident = new Resident(
-                        UUID.fromString(rs.getString("residentID")), rs.getString("name"), rs.getString("phone"));
                 returnList.add(resident);
             }
             return returnList;
@@ -226,13 +205,13 @@ public class Facade {
             pstmt.setString(4, name);
             pstmt.executeUpdate();
             pstmt.close();
-          
+
             bostedCon.update(MessageFormat.format("CREATE TABLE IF NOT EXISTS `grp14bosted`.`residents_{0}` "
                     + "( `residentID` VARCHAR(36) NOT NULL PRIMARY KEY, `added` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP);", wardID));
-            
+
             bostedCon.update(MessageFormat.format("CREATE TABLE `grp14bosted`.`users_{0}` "
                     + "( `userID` VARCHAR(36) NOT NULL PRIMARY KEY, `added` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP );", wardID));
-            
+
             bostedCon.update(MessageFormat.format("CREATE TABLE IF NOT EXISTS `grp14bosted`.`diaries_{0}` "
                     + "( `residentID` VARCHAR(36) NOT NULL PRIMARY KEY "
                     + ", `authorID` VARCHAR(36) NOT NULL "
@@ -282,14 +261,48 @@ public class Facade {
         }
         return returnList;
     }
-    
-    public UUID getCurrentWardID(){
+
+    public UUID getCurrentWardID() {
         return currentWardID;
     }
-    
+
     @Override
-    public String toString(){
+    public String toString() {
         return "" + this.currentUser + this.currentWardID;
     }
 
+    public String getCPR(String cpr) {
+        try {
+            borgerCon.openConnection();
+            ResultSet rs = borgerCon.query("SELECT `cpr` From borger WHERE cpr = "+ cpr);
+            String s = rs.getString("cpr");
+            rs.close();
+            return s;
+
+        } catch (SQLException ex) {
+        } finally {
+            borgerCon.closeConnection();
+        }
+        return null;
+    }
+
+    public String getjournal(String s) {
+        try {
+            borgerCon.openConnection();
+
+            String journal = "";
+
+            ResultSet rs = borgerCon.query("SELECT `journal` FROM `borger` WHERE cpr = " + s);
+            while (rs.next()) {
+                journal = rs.getString("journal");
+            }
+            rs.close();
+            return journal;
+
+        } catch (SQLException ex) {
+        } finally {
+            borgerCon.closeConnection();
+        }
+        return null;
+    }
 }
