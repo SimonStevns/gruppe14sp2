@@ -28,7 +28,7 @@ import javafx.stage.FileChooser;
 public class AdminController implements Initializable {
 
     @FXML
-    private TextField userName, userEmail, userPhone, userPass, resPhone, resEmail, resName;
+    private TextField userName, userEmail, userPhone, userPass, resPhone, resEmail, resName, resCPR;
     @FXML
     private TextField residenceName, residenceAddress, residencePhone, residenceEmail, wardName, wardDescription;
     @FXML
@@ -96,7 +96,7 @@ public class AdminController implements Initializable {
             if (residentAllFieldsfilled() && validateInput("navn", resName.getText(), 255) && validateInput("telefonnummer", resPhone.getText(), 255) && validateInput("email", resEmail.getText(), 255)) {
                 try {
                     Ward tempWard = (Ward) residentWardCB.getSelectionModel().getSelectedItem();
-                    facade.newResident(tempWard.getWardNumber(), resName.getText(), resPhone.getText(), resEmail.getText(), resImage);
+                    facade.newResident(tempWard.getWardNumber(), resName.getText(), resPhone.getText(), resEmail.getText(), resImage,resCPR.getText());
                     residentCreated();
                 } catch (SQLException ex) {
                     Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
@@ -104,7 +104,6 @@ public class AdminController implements Initializable {
                     Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
-                System.out.println("");
             }
         });
 
@@ -212,6 +211,7 @@ public class AdminController implements Initializable {
         resEmail.clear();
         resName.clear();
         resPhone.clear();
+        resCPR.clear();
         resImage = null;
     }
 
