@@ -2,9 +2,13 @@ package gr14bosted;
 
 import Domain.Diary;
 import Domain.Facade;
+import Domain.Prescription;
 import Domain.Resident;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.UUID;
 import javafx.animation.PauseTransition;
@@ -16,20 +20,25 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.util.Callback;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 public class MainFXMLController implements Initializable {
@@ -37,7 +46,7 @@ public class MainFXMLController implements Initializable {
     @FXML
     private Pane paneDiary, paneWrite, paneRead, paneMedicine;
     @FXML
-    private Button buttonWard, buttonMedicine, buttonWrite, buttonRead, buttonSubmit;
+    private Button buttonWard, buttonMedicine, buttonWrite, buttonRead, buttonSubmit, prescriptionBtn;
     @FXML
     private AnchorPane wardMenu;
     @FXML
@@ -51,6 +60,8 @@ public class MainFXMLController implements Initializable {
     @FXML
     private ListView<Diary> diariesLV;
     @FXML
+    private ListView<Prescription> prescriptionLV;
+    @FXML
     private ChoiceBox topicCB;
     @FXML
     private TextField customTopicTF, searchField;
@@ -58,7 +69,10 @@ public class MainFXMLController implements Initializable {
     private ObservableList<Resident> residents, residentsSearch;
   
     private ObservableList<Diary> diarys;
-
+    private ObservableList<Prescription> prescriptions = FXCollections.observableArrayList();
+    
+    private HashMap<CheckBox, Prescription> prescriptionCb = new HashMap();
+    
     private Facade facade = new Facade();
 
     @Override
@@ -103,10 +117,62 @@ public class MainFXMLController implements Initializable {
         buttonWrite.setOnAction((ActionEvent e) -> {
             setVisablePane(paneWrite);
         });
-
+        // Medicine pane
         buttonMedicine.setOnAction((ActionEvent e) -> {
             setVisablePane(paneMedicine);
+            prescriptions.clear();
+            prescriptions.addAll(facade.getPrescriptions(residents));
         });
+        
+        prescriptionLV.setItems(prescriptions);
+        prescriptionLV.setCellFactory((ListView<Prescription> prescriptionListView) -> new ListCell<Prescription>(){
+            private final ImageView imageView = new ImageView();
+            private final Label drug= new Label();
+            private final Label name = new Label();
+            private final CheckBox cb = new CheckBox();
+            private final HBox hb = new HBox(imageView, name, drug, cb);
+            @Override
+            protected void updateItem(Prescription prescription, boolean empty){
+                super.updateItem(prescription, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(new VBox());
+                } else {
+                    imageView.setImage(prescription.getImage());
+                    
+                    name.setText("\n    " + prescription.getName());
+                    drug.setText(prescription.getDrugDescription() + "\n" + prescription.getDosage() + "\n" + prescription.getIndication());
+                    drug.paddingProperty().setValue(new Insets(0,0,0,10));
+                    
+                    cb.setText("Udleveret");
+                    cb.setSelected(true);
+                    cb.paddingProperty().setValue(new Insets(25, 10, 10, 10));
+                    bindCheckBox(cb, prescription);
+                    
+                    setGraphic(hb);
+                    setText(null);
+                }
+            }
+        });
+        
+        prescriptionBtn.setOnAction(e ->{
+            String names ="Dagbøger tilføjet for: \n";
+            String topic = "Medicin";
+            
+            for (CheckBox cb : prescriptionCb.keySet()) {
+                Prescription prescription = prescriptionCb.get(cb);
+                names += prescription.getName() + "\n";
+                if (cb.isSelected()) {
+                    facade.addDiaryEntry(prescription.getID(), topic, prescription.diaryString(), LocalDate.now());
+                } else {
+                    String reason = showInputTextDialog(null, "Hvorfår har " + prescription.getName() + " ikke fået " + prescription.getDrugDescription() + "?", "Årsag:");
+                    facade.addDiaryEntry(prescription.getID(), topic, reason, LocalDate.now());
+                }
+            }
+            goBack();
+            showDialog(prescriptionCb.keySet().size() + " dagbøger tilføjet", names);
+        });
+        
         buttonWard.setOnAction((ActionEvent e) -> {
             //to do
             animWardMenu();
@@ -245,8 +311,21 @@ public class MainFXMLController implements Initializable {
         alert.show();
 
         PauseTransition delay = new PauseTransition(Duration.seconds(duration));
-        delay.setOnFinished(event -> alert.close());
+        delay.setOnFinished(e -> alert.close());
         delay.play();
+    }
+    
+    private String showInputTextDialog(String titel, String header, String reason){
+        String returnString = "";
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle(titel);
+        dialog.setHeaderText(header);
+        dialog.setContentText(reason);       
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            returnString = result.get();
+        }
+        return returnString;
     }
 
     private boolean validateInputDiary(String inputName, String input, int length) {
@@ -254,7 +333,12 @@ public class MainFXMLController implements Initializable {
             showDialog("Fejl ved oprettelse", "Dagbogen er for lang, den skal fylde mindre end 1000 tegn");
         }
         return input.length() <= length;
-
+    }
+    
+    private void bindCheckBox(CheckBox cb, Prescription prescription){
+        if (!prescriptionCb.containsValue(prescription)){
+            this.prescriptionCb.putIfAbsent(cb, prescription);
+        }
     }
 
 }

@@ -45,7 +45,11 @@
                               <TextField fx:id="customTopicTF" layoutX="241.0" layoutY="80.0" prefHeight="25.0" prefWidth="174.0" visible="false" />
                            </children>
                         </Pane>
-                        <Pane fx:id="paneMedicine" visible="false" />
+                        <Pane fx:id="paneMedicine" visible="false">
+                           <children>
+                              <ListView fx:id="prescriptionLV" layoutX="14.0" layoutY="50.0" prefHeight="500.0" prefWidth="420.0" />
+                              <Button fx:id="prescriptionBtn" layoutX="346.0" layoutY="548.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="80.0" text="Submit" />
+                           </children></Pane>
                         <Pane fx:id="paneRead" visible="false">
                            <children>
                               <Label text="Read Diary Temp Label" />

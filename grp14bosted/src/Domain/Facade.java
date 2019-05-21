@@ -302,7 +302,39 @@ public class Facade {
         }
         return returnList;
     }
-
+    
+    public ObservableList<Prescription> getPrescriptions(ObservableList<Resident> residents){
+        ObservableList<Prescription> retrunList = FXCollections.observableArrayList();
+        try {
+            medicinCon.openConnection();
+            PreparedStatement pstmt = medicinCon.getPreparedstmt(
+                    "SELECT `drug`, `form`, `strength`, `dosage`, `indication` "
+                    + "FROM `ordination` WHERE `CPR` = ? AND `start_date` <= ? AND `end_date` >= ?;");
+            for (Resident resident : residents) {
+                pstmt.setString(1, "999999-9999");//TO DO: Change to resident.getCPR
+                pstmt.setDate(2, java.sql.Date.valueOf(LocalDate.now()));
+                pstmt.setDate(3, java.sql.Date.valueOf(LocalDate.now()));
+                ResultSet rs = pstmt.executeQuery();
+                
+                while (rs.next()) {
+                    retrunList.add(new Prescription(
+                            resident.getID()
+                            , resident.getName()
+                            , resident.getImage()
+                            , rs.getString("drug")
+                            , rs.getString("form")
+                            , rs.getString("strength")
+                            , rs.getString("dosage")
+                            , rs.getString("indication")));
+                }
+                rs.close();
+            }
+            pstmt.close();
+            medicinCon.closeConnection();
+        } catch (SQLException ex) { ex.printStackTrace();}
+        return retrunList;
+    }
+  
     public UUID getCurrentWardID() {
         return currentWardID;
     }
