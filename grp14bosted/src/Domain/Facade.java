@@ -195,7 +195,15 @@ public class Facade {
     public ObservableList<Diary> getResidentdiaries(UUID residentID) {
         try {
             bostedCon.openConnection();
-            PreparedStatement pstmt = bostedCon.getPreparedstmt("SELECT topic, text, date FROM `diaries_" + currentWardID.toString() + "` where residentID = ? ORDER BY date DESC ;");
+            PreparedStatement pstmt;
+            if (hasPrivlege(Privilege.VIEWALLDIARYS)) {
+                pstmt = bostedCon.getPreparedstmt("SELECT topic, text, date FROM `diaries_" + currentWardID.toString() + "` where residentID = ? ORDER BY date DESC ;");
+            } else if (hasPrivlege(Privilege.VIEWOWNDIARYS)) {
+                pstmt = bostedCon.getPreparedstmt("SELECT topic, text, date FROM `diaries_" + currentWardID.toString() + "` where residentID = ? ORDER BY date DESC ;");
+            } else {
+                return FXCollections.observableArrayList();
+            }
+            
             pstmt.setString(1, residentID.toString());
             ResultSet rs = pstmt.executeQuery();
 
@@ -387,9 +395,6 @@ public class Facade {
         } finally {
             borgerCon.closeConnection();
         }
-    }
-    public void newUser(UUID wardNumber, String text, String text0, String text1, String text2, boolean selected, boolean selected0, boolean selected1, boolean selected2, boolean selected3, boolean selected4) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

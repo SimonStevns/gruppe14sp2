@@ -3,6 +3,7 @@ package gr14bosted;
 import Domain.Diary;
 import Domain.Facade;
 import Domain.Prescription;
+import Domain.Privilege;
 import Domain.Resident;
 import java.net.URL;
 import java.time.LocalDate;
@@ -77,7 +78,19 @@ public class MainFXMLController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        // privlege checks
+        if (facade.hasPrivlege(Privilege.VIEWALLDIARYS) || facade.hasPrivlege(Privilege.VIEWOWNDIARYS)){
+            buttonRead.setVisible(true);
+        }
+        if (facade.hasPrivlege(Privilege.WRITEDIARY)) {
+            buttonWrite.setVisible(true);
+        }
+        if (facade.hasPrivlege(Privilege.DRUGDISTRIBUTION)) {
+            buttonMedicine.setVisible(true);
+        }
+        if (facade.hasPrivlege(Privilege.FINDJOURNAL)) {
+            journalTA.setVisible(true);
+        }
         residents = facade.getCurrentResidents();
         residentsSearch = facade.getCurrentResidents();
         residentsLV.setCellFactory(residentListView -> new ListCell<Resident>(){
