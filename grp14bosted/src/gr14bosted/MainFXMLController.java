@@ -52,7 +52,7 @@ public class MainFXMLController implements Initializable {
     @FXML
     private SplitPane splitPane;
     @FXML
-    private TextArea diaryTA;
+    private TextArea diaryTA,journalTA;
     @FXML
     private DatePicker diaryDate;
     @FXML
@@ -64,9 +64,10 @@ public class MainFXMLController implements Initializable {
     @FXML
     private ChoiceBox topicCB;
     @FXML
-    private TextField customTopicTF;
+    private TextField customTopicTF, searchField;
 
-    private ObservableList<Resident> residents;
+    private ObservableList<Resident> residents, residentsSearch;
+  
     private ObservableList<Diary> diarys;
     private ObservableList<Prescription> prescriptions = FXCollections.observableArrayList();
     
@@ -78,6 +79,7 @@ public class MainFXMLController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         residents = facade.getCurrentResidents();
+        residentsSearch = facade.getCurrentResidents();
         residentsLV.setCellFactory(residentListView -> new ListCell<Resident>(){
             private ImageView imageView = new ImageView();
             @Override
@@ -96,7 +98,8 @@ public class MainFXMLController implements Initializable {
                 }
             }
         });
-        residentsLV.setItems(residents);
+        
+        residentsLV.setItems(residentsSearch);
         residentsLV.getSelectionModel().selectFirst();
 
         splitPane.lookupAll(".split-pane-divider").stream()
@@ -211,7 +214,16 @@ public class MainFXMLController implements Initializable {
 
         diaryDate.setValue(LocalDate.now());
         diaryDate.setShowWeekNumbers(true);
-
+        journalTA.setWrapText(true);
+    }
+    
+    public void searchUpdate(){
+        residentsSearch.clear();
+        for (Resident i : residents){
+            if(i.getName().toUpperCase().contains(searchField.getText().toUpperCase()))
+                residentsSearch.add(i);
+            residentsLV.setItems(residentsSearch);
+        }
     }
 
     public void animWardMenu() {
@@ -236,6 +248,12 @@ public class MainFXMLController implements Initializable {
 
     public void goBack() {
         setVisablePane(paneDiary);
+        showJournal();
+    }
+    public void showJournal() {
+        journalTA.clear();
+        Resident res = residentsLV.getSelectionModel().getSelectedItem();  
+        journalTA.appendText(facade.getjournal(res.getCPR()));
     }
 
     private Resident selectedResident() {
