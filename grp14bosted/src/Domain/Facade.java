@@ -158,10 +158,22 @@ public class Facade {
 
         if (rs.next()) {
             boolean[] b = {
-                rs.getBoolean("VIEWOWN"), rs.getBoolean("VIEWALL"), rs.getBoolean("FIND"), rs.getBoolean("WRITEDIARY"), rs.getBoolean("DRUG"), rs.getBoolean("ADMIN")
+                rs.getBoolean("VIEWOWN")
+                , rs.getBoolean("VIEWALL")
+                , rs.getBoolean("FIND")
+                , rs.getBoolean("WRITEDIARY")
+                , rs.getBoolean("DRUG")
+                , rs.getBoolean("ADMIN")
             };
             currentUser = new User(
-                    new Privileges(b), UUID.fromString(rs.getString("userID")), rs.getString("name"), rs.getString("email"), rs.getString("pass"), rs.getString("phone"));
+                    new Privileges(b)
+                    , UUID.fromString(rs.getString("userID"))
+                    , rs.getString("name")
+                    , rs.getString("email")
+                    , rs.getString("pass")
+                    , rs.getString("phone")
+            );
+            
             currentWardID = UUID.fromString(rs.getString("primeWard"));
             bostedCon.closeConnection();
             return true;
@@ -192,14 +204,18 @@ public class Facade {
         }
     }
 
-    public ObservableList<Diary> getResidentdiaries(UUID residentID) {
+    public ObservableList<Diary> getResidentDiaries(UUID residentID) {
         try {
             bostedCon.openConnection();
             PreparedStatement pstmt;
             if (hasPrivlege(Privilege.VIEWALLDIARYS)) {
-                pstmt = bostedCon.getPreparedstmt("SELECT topic, text, date FROM `diaries_" + currentWardID.toString() + "` where residentID = ? ORDER BY date DESC ;");
+                pstmt = bostedCon.getPreparedstmt("SELECT topic, text, date FROM `diaries_" + currentWardID.toString() + "` "
+                        + "WHERE residentID = ? ORDER BY date DESC ;");
             } else if (hasPrivlege(Privilege.VIEWOWNDIARYS)) {
-                pstmt = bostedCon.getPreparedstmt("SELECT topic, text, date FROM `diaries_" + currentWardID.toString() + "` where residentID = ? ORDER BY date DESC ;");
+                pstmt = bostedCon.getPreparedstmt("SELECT topic, text, date FROM `diaries_" + currentWardID.toString() + "` "
+                        + "WHERE residentID = ? AND authorID = ?"
+                        + "ORDER BY date DESC ;");
+                pstmt.setString(2, currentUser.getID().toString());
             } else {
                 return FXCollections.observableArrayList();
             }
@@ -282,7 +298,11 @@ public class Facade {
 
             while (rs.next()) {
                 returnList.add(new Residence(
-                        UUID.fromString(rs.getString("residenceID")), rs.getString("name"), rs.getString("phone"), rs.getString("email"), rs.getString("address")));
+                        UUID.fromString(rs.getString("residenceID"))
+                        , rs.getString("name")
+                        , rs.getString("phone")
+                        , rs.getString("email")
+                        , rs.getString("address")));
             }
             return returnList;
         } catch (Exception e) {

@@ -122,14 +122,14 @@ public class MainFXMLController implements Initializable {
             setVisablePane(paneRead);
 
             if (selectedResident() != null) {
-                diariesLV.setItems(facade.getResidentdiaries(selectedResidentUuid()));
+                diariesLV.setItems(facade.getResidentDiaries(selectedResidentUuid()));
             }
-
         });
 
         buttonWrite.setOnAction((ActionEvent e) -> {
             setVisablePane(paneWrite);
         });
+        
         // Medicine pane
         buttonMedicine.setOnAction((ActionEvent e) -> {
             setVisablePane(paneMedicine);
@@ -140,7 +140,7 @@ public class MainFXMLController implements Initializable {
         prescriptionLV.setItems(prescriptions);
         prescriptionLV.setCellFactory((ListView<Prescription> prescriptionListView) -> new ListCell<Prescription>(){
             private final ImageView imageView = new ImageView();
-            private final Label drug= new Label();
+            private final Label drug = new Label();
             private final Label name = new Label();
             private final CheckBox cb = new CheckBox();
             private final HBox hb = new HBox(imageView, name, drug, cb);
