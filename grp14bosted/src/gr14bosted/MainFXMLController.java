@@ -246,7 +246,7 @@ public class MainFXMLController implements Initializable {
     public void animWardMenu() {
         TranslateTransition tt = new TranslateTransition(Duration.millis(250d), wardMenu);
         if (wardMenu.getTranslateX() == 0) {
-            tt.setByX(56);
+            tt.setByX(230);
             tt.setCycleCount(1);
             tt.setAutoReverse(false);
             tt.play();

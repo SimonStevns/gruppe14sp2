@@ -21,7 +21,6 @@
                <children>
                   <Pane>
                      <children>
-                        <TextField layoutY="138.0" prefHeight="25.0" prefWidth="200.0" />
                         <TextField fx:id="searchField" layoutY="138.0" onKeyReleased="#searchUpdate" prefHeight="25.0" prefWidth="200.0" promptText="Søg efter en beboer..." />
                         <ListView layoutX="231.0" layoutY="174.0" prefHeight="329.0" prefWidth="213.0" />
                         <Button fx:id="buttonWard" mnemonicParsing="false" text="Afdeling" />
@@ -75,7 +74,7 @@
       </SplitPane>
       <AnchorPane fx:id="wardMenu" layoutX="-56.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="26.0">
          <children>
-            <Label text="Label">
+            <Label layoutX="-172.0" text="Not implemented yet">
                <font>
                   <Font size="24.0" />
                </font>
