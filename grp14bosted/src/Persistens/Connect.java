@@ -7,8 +7,6 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
 import java.sql.SQLTimeoutException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Connect {
 
@@ -47,6 +45,7 @@ public class Connect {
             se.printStackTrace();
         }
     }
+    
     public void update(String sql) throws SQLException{
         Statement stmt = conn.createStatement();
         stmt.executeUpdate(sql);

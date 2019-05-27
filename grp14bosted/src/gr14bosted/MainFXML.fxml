@@ -21,7 +21,6 @@
                <children>
                   <Pane>
                      <children>
-                        <TextField layoutY="138.0" prefHeight="25.0" prefWidth="200.0" />
                         <TextField fx:id="searchField" layoutY="138.0" onKeyReleased="#searchUpdate" prefHeight="25.0" prefWidth="200.0" promptText="Søg efter en beboer..." />
                         <ListView layoutX="231.0" layoutY="174.0" prefHeight="329.0" prefWidth="213.0" />
                         <Button fx:id="buttonWard" mnemonicParsing="false" text="Afdeling" />
@@ -52,8 +51,12 @@
                            </children></Pane>
                         <Pane fx:id="paneRead" visible="false">
                            <children>
-                              <Label text="Read Diary Temp Label" />
-                              <ListView fx:id="diariesLV" prefHeight="600.0" prefWidth="446.0" />
+                              <Label fx:id="diaryLabel" layoutX="3.0" layoutY="4.0" prefHeight="25.0" prefWidth="71.0" text="Dagbøger">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font></Label>
+                              <ListView fx:id="diariesLV" layoutY="33.0" prefHeight="539.0" prefWidth="446.0" />
+                              <Button fx:id="diariesReadFull" layoutY="573.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="446.0" text="Læs hele dagbogen" />
                            </children>
                         </Pane>
                         <Pane fx:id="paneDiary">
@@ -71,7 +74,7 @@
       </SplitPane>
       <AnchorPane fx:id="wardMenu" layoutX="-56.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="26.0">
          <children>
-            <Label text="Label">
+            <Label layoutX="-172.0" text="Not implemented yet">
                <font>
                   <Font size="24.0" />
                </font>

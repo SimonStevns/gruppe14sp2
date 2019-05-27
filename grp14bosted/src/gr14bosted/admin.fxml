@@ -9,7 +9,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr14bosted.AdminController">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" stylesheets="@stylesheet.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr14bosted.AdminController">
   <tabs>
       <Tab text="Nyt bosted">
         <content>
@@ -28,7 +28,7 @@
             </AnchorPane>
         </content>
       </Tab>
-      <Tab text="Ny afdelling">
+      <Tab text="Ny afdeling">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -52,6 +52,8 @@
                   <TextField fx:id="userPhone" layoutX="170.0" layoutY="165.0" prefWidth="300.0" />
                   <TextField fx:id="userPass" layoutX="170.0" layoutY="190.0" prefWidth="300.0" />
                   <Label layoutX="134.0" layoutY="119.0" text="Navn" />
+                  <Label layoutX="97.0" layoutY="24.0" text="Vælg bosted" />
+                  <Label layoutX="86.0" layoutY="68.0" text="Vælg afdeling" />
                   <Label layoutX="131.0" layoutY="144.0" text="E-mail" />
                   <Label layoutX="77.0" layoutY="169.0" text="Telefonnummer" />
                   <Label layoutX="119.0" layoutY="194.0" text="Kodeord" />
@@ -85,8 +87,15 @@
                   <Button fx:id="btnCreateRes" layoutX="183.0" layoutY="338.0" mnemonicParsing="false" text="Opret bruger" />
                   <ChoiceBox fx:id="residentResidenceCB" layoutX="183.0" layoutY="32.0" prefWidth="300.0" />
                   <ChoiceBox fx:id="residentWardCB" layoutX="183.0" layoutY="81.0" prefWidth="300.0" />
+                  <Label layoutX="88.0" layoutY="36.0" text="Vælg bosted" />
+                  <Label layoutX="85.0" layoutY="85.0" text="Vælg afdeling" />
                </children></AnchorPane>
       </content>
     </Tab>
+      <Tab id="toMainTab" fx:id="toMainTab">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+        </content>
+      </Tab>
   </tabs>
 </TabPane>

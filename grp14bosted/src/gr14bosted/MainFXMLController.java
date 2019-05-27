@@ -7,7 +7,6 @@ import Domain.Privilege;
 import Domain.Resident;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -39,7 +38,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 public class MainFXMLController implements Initializable {
@@ -48,7 +46,7 @@ public class MainFXMLController implements Initializable {
     @FXML
     private Pane paneDiary, paneWrite, paneRead, paneMedicine;
     @FXML
-    private Button buttonWard, buttonMedicine, buttonWrite, buttonRead, buttonSubmit, prescriptionBtn;
+    private Button buttonWard, buttonMedicine, buttonWrite, buttonRead, buttonSubmit, prescriptionBtn, diariesReadFull;
     @FXML
     private AnchorPane wardMenu;
     @FXML
@@ -67,7 +65,7 @@ public class MainFXMLController implements Initializable {
     private ChoiceBox topicCB;
     @FXML
     private TextField customTopicTF, searchField;
-
+    
     private ObservableList<Resident> residents, residentsSearch;
   
     private ObservableList<Diary> diaries;
@@ -119,7 +117,7 @@ public class MainFXMLController implements Initializable {
         splitPane.lookupAll(".split-pane-divider").stream()
                 .forEach(div -> div.setMouseTransparent(true));
 
-        buttonRead.setOnAction((ActionEvent e) -> {
+        buttonRead.setOnAction(e -> {
             setVisablePane(paneRead);
 
             if (selectedResident() != null) {
@@ -132,7 +130,7 @@ public class MainFXMLController implements Initializable {
         });
         
         // Medicine pane
-        buttonMedicine.setOnAction((ActionEvent e) -> {
+        buttonMedicine.setOnAction(e -> {
             setVisablePane(paneMedicine);
             prescriptions.clear();
             prescriptions.addAll(facade.getPrescriptions(residents));
@@ -141,16 +139,16 @@ public class MainFXMLController implements Initializable {
         prescriptionLV.setItems(prescriptions);
         prescriptionLV.setCellFactory((ListView<Prescription> prescriptionListView) -> new ListCell<Prescription>(){
             private final ImageView imageView = new ImageView();
-            private final Label drug = new Label();
             private final Label name = new Label();
+            private final Label drug = new Label();
             private final CheckBox cb = new CheckBox();
             private final HBox hb = new HBox(imageView, name, drug, cb);
             @Override
             protected void updateItem(Prescription prescription, boolean empty){
                 super.updateItem(prescription, empty);
+                setText(null);
                 if (empty) {
-                    setText(null);
-                    setGraphic(new VBox());
+                    setGraphic(null);
                 } else {
                     imageView.setImage(prescription.getImage());
                     
@@ -164,7 +162,6 @@ public class MainFXMLController implements Initializable {
                     bindCheckBox(cb, prescription);
                     
                     setGraphic(hb);
-                    setText(null);
                 }
             }
         });
@@ -225,7 +222,14 @@ public class MainFXMLController implements Initializable {
 
         diaries = FXCollections.observableArrayList();
         diariesLV.setItems(diaries);
-
+        
+        diariesReadFull.setOnAction(e ->{
+            if (diariesLV.getSelectionModel().getSelectedItem() != null) {
+                Diary diary = diariesLV.getSelectionModel().getSelectedItem();
+                showDialog("Dagbog for " + diary.getDate(), "Emne:\n" + diary.getTopic() + "\nIndehold:\n " + diary.getText());
+            }
+        });
+        
         diaryDate.setValue(LocalDate.now());
         diaryDate.setShowWeekNumbers(true);
         journalTA.setWrapText(true);
@@ -243,7 +247,7 @@ public class MainFXMLController implements Initializable {
     public void animWardMenu() {
         TranslateTransition tt = new TranslateTransition(Duration.millis(250d), wardMenu);
         if (wardMenu.getTranslateX() == 0) {
-            tt.setByX(56);
+            tt.setByX(230);
             tt.setCycleCount(1);
             tt.setAutoReverse(false);
             tt.play();
@@ -264,6 +268,7 @@ public class MainFXMLController implements Initializable {
         setVisablePane(paneDiary);
         showJournal();
     }
+    
     public void showJournal() {
         journalTA.clear();
         Resident res = residentsLV.getSelectionModel().getSelectedItem();  
@@ -288,7 +293,6 @@ public class MainFXMLController implements Initializable {
         if (customTopicTF.isVisible() && customTopicTF.getText() != null) {
             return customTopicTF.getText();
         }
-
         return (String) topicCB.getSelectionModel().getSelectedItem();
     }
 
@@ -329,12 +333,12 @@ public class MainFXMLController implements Initializable {
         delay.play();
     }
     
-    private String showInputTextDialog(String titel, String header, String reason){
+    private String showInputTextDialog(String titel, String header, String content){
         String returnString = "";
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle(titel);
         dialog.setHeaderText(header);
-        dialog.setContentText(reason);       
+        dialog.setContentText(content);       
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) {
             returnString = result.get();
