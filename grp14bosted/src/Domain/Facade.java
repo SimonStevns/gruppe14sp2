@@ -159,10 +159,22 @@ public class Facade {
 
         if (rs.next()) {
             boolean[] b = {
-                rs.getBoolean("VIEWOWN"), rs.getBoolean("VIEWALL"), rs.getBoolean("FIND"), rs.getBoolean("WRITEDIARY"), rs.getBoolean("DRUG"), rs.getBoolean("ADMIN")
+                rs.getBoolean("VIEWOWN")
+                , rs.getBoolean("VIEWALL")
+                , rs.getBoolean("FIND")
+                , rs.getBoolean("WRITEDIARY")
+                , rs.getBoolean("DRUG")
+                , rs.getBoolean("ADMIN")
             };
             currentUser = new User(
-                    new Privileges(b), UUID.fromString(rs.getString("userID")), rs.getString("name"), rs.getString("email"), rs.getString("pass"), rs.getString("phone"));
+                    new Privileges(b)
+                    , UUID.fromString(rs.getString("userID"))
+                    , rs.getString("name")
+                    , rs.getString("email")
+                    , rs.getString("pass")
+                    , rs.getString("phone")
+            );
+            
             currentWardID = UUID.fromString(rs.getString("primeWard"));
             bostedCon.closeConnection();
             return true;
@@ -193,10 +205,22 @@ public class Facade {
         }
     }
 
-    public ObservableList<Diary> getResidentdiaries(UUID residentID) {
+    public ObservableList<Diary> getResidentDiaries(UUID residentID) {
         try {
             bostedCon.openConnection();
-            PreparedStatement pstmt = bostedCon.getPreparedstmt("SELECT topic, text, date FROM `diaries_" + currentWardID.toString() + "` where residentID = ? ORDER BY date DESC ;");
+            PreparedStatement pstmt;
+            if (hasPrivlege(Privilege.VIEWALLDIARYS)) {
+                pstmt = bostedCon.getPreparedstmt("SELECT topic, text, date FROM `diaries_" + currentWardID.toString() + "` "
+                        + "WHERE residentID = ? ORDER BY date DESC ;");
+            } else if (hasPrivlege(Privilege.VIEWOWNDIARYS)) {
+                pstmt = bostedCon.getPreparedstmt("SELECT topic, text, date FROM `diaries_" + currentWardID.toString() + "` "
+                        + "WHERE residentID = ? AND authorID = ?"
+                        + "ORDER BY date DESC ;");
+                pstmt.setString(2, currentUser.getID().toString());
+            } else {
+                return FXCollections.observableArrayList();
+            }
+            
             pstmt.setString(1, residentID.toString());
             ResultSet rs = pstmt.executeQuery();
 
@@ -275,7 +299,11 @@ public class Facade {
 
             while (rs.next()) {
                 returnList.add(new Residence(
-                        UUID.fromString(rs.getString("residenceID")), rs.getString("name"), rs.getString("phone"), rs.getString("email"), rs.getString("address")));
+                        UUID.fromString(rs.getString("residenceID"))
+                        , rs.getString("name")
+                        , rs.getString("phone")
+                        , rs.getString("email")
+                        , rs.getString("address")));
             }
             return returnList;
         } catch (Exception e) {
@@ -340,15 +368,10 @@ public class Facade {
         return currentWardID;
     }
 
-    @Override
-    public String toString() {
-        return "" + this.currentUser + this.currentWardID;
-    }
-
     public String getCPR(String cpr) {
         try {
             borgerCon.openConnection();
-            ResultSet rs = borgerCon.query("SELECT `cpr` From borger WHERE cpr = "+ cpr);
+            ResultSet rs = borgerCon.query("SELECT `cpr` FROM borger WHERE cpr = "+ cpr);
             String s = rs.getString("cpr");
             rs.close();
             return s;
@@ -379,8 +402,19 @@ public class Facade {
         }
         return null;
     }
-
-    public void newUser(UUID wardNumber, String text, String text0, String text1, String text2, boolean selected, boolean selected0, boolean selected1, boolean selected2, boolean selected3, boolean selected4) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+    private void log (String activity){
+        try {
+            bostedCon.openConnection();
+            PreparedStatement pstmt = bostedCon.getPreparedstmt("INSERT INTO `log` (`userID`, `activity`) VALUES ( ? , ? )");
+            pstmt.setString(1, currentUser.getID().toString());
+            pstmt.setString(2, activity);
+            pstmt.executeUpdate();
+            pstmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            borgerCon.closeConnection();
+        }
     }
 }
