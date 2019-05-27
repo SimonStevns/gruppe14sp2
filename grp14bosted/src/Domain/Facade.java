@@ -12,6 +12,8 @@ import javafx.collections.ObservableList;
 import java.util.UUID;
 import javafx.collections.FXCollections;
 import java.time.LocalDate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.scene.image.Image;
 
 public class Facade {
@@ -93,8 +95,7 @@ public class Facade {
         try {
             bostedCon.openConnection();
             ResultSet rs = bostedCon.query(
-
-                      "SELECT residents.residentID, residents.picture ,name, phone, cpr "
+                      "SELECT residents.residentID, cpr, residents.picture ,name, phone "
                     + "FROM `residents_" + currentWardID.toString() + "`"
                     + "INNER JOIN residents ON `residents_" + currentWardID.toString() + "`.residentID = residents.residentID "
                     + "WHERE residents.picture IS NOT NULL;");
@@ -102,10 +103,10 @@ public class Facade {
             while (rs.next()) {
                 Resident resident = new Resident(
                         UUID.fromString(rs.getString("residentID"))
+                        , rs.getString("cpr")
                         , new Image(rs.getBlob("picture").getBinaryStream(), 50, 50, false, false)
                         , rs.getString("name")
-                        , rs.getString("phone")
-                        , rs.getString("cpr"));
+                        , rs.getString("phone"));
                 returnList.add(resident);
             }
             return returnList;
@@ -309,9 +310,9 @@ public class Facade {
             medicinCon.openConnection();
             PreparedStatement pstmt = medicinCon.getPreparedstmt(
                     "SELECT `drug`, `form`, `strength`, `dosage`, `indication` "
-                    + "FROM `ordination` WHERE `CPR` = ? AND `start_date` <= ? AND `end_date` >= ?;");
+                    + "FROM `ordination` WHERE `cpr` = ? AND `start_date` <= ? AND `end_date` >= ?;");
             for (Resident resident : residents) {
-                pstmt.setString(1, "999999-9999");//TO DO: Change to resident.getCPR
+                pstmt.setString(1, resident.getCPR());//TO DO: Change to resident.getCPR
                 pstmt.setDate(2, java.sql.Date.valueOf(LocalDate.now()));
                 pstmt.setDate(3, java.sql.Date.valueOf(LocalDate.now()));
                 ResultSet rs = pstmt.executeQuery();
@@ -382,5 +383,4 @@ public class Facade {
     public void newUser(UUID wardNumber, String text, String text0, String text1, String text2, boolean selected, boolean selected0, boolean selected1, boolean selected2, boolean selected3, boolean selected4) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
 }
