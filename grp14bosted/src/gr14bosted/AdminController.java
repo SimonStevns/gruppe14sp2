@@ -6,6 +6,7 @@ import Domain.Residence;
 import Domain.Ward;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -22,6 +23,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 
@@ -37,9 +40,10 @@ public class AdminController implements Initializable {
     private ChoiceBox wardCB, userResidenceCB, userWardCB, residentResidenceCB, residentWardCB;
     @FXML
     private Button btnCreateResidence, btnCreateUser, btnCreateWard, btnCreateRes, resSelectPic, userSelectPic;
-
-    private ObservableList<Ward> userWards = FXCollections.observableArrayList();
-    private ObservableList<Ward> residentWards = FXCollections.observableArrayList();
+    @FXML
+    private Tab toMainTab;
+    
+    private ObservableList<Ward> userWards, residentWards = FXCollections.observableArrayList();
     private ObservableList<Residence> residences = FXCollections.observableArrayList();
     
     private File userImage, resImage = null;
@@ -49,14 +53,14 @@ public class AdminController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         btnCreateResidence.setOnAction(e -> {
-            if (residenceAllFieldsfilled() && validateInput("navn", residenceName.getText(), 255) && validateInput("adresse", residenceAddress.getText(), 255) && validateInput("telefonnummer", residencePhone.getText(), 255) && validateInput("email", residenceEmail.getText(), 255)) {
+            if (residenceAllFieldsfilled() && validateInput("Navn", residenceName.getText(), 255) && validateInput("Adresse", residenceAddress.getText(), 255) && validateInput("telefonnummer", residencePhone.getText(), 255) && validateInput("email", residenceEmail.getText(), 255)) {
                 facade.addResidence(residenceName.getText(), residenceAddress.getText(), residencePhone.getText(), residenceEmail.getText());
                 residenceCreated();
             }
         });
 
         btnCreateWard.setOnAction(e -> {
-            if (wardAllFieldsfilled() && validateInput("beskrivelse", wardDescription.getText(), 255) && validateInput("navn", wardName.getText(), 255)) {
+            if (wardAllFieldsfilled() && validateInput("Beskrivelse", wardDescription.getText(), 255) && validateInput("Navn", wardName.getText(), 255)) {
                 Residence r = (Residence) wardCB.getValue();
                 facade.newWard(r.getId().toString(), wardDescription.getText(), wardName.getText());
                 wardCreated();
@@ -93,7 +97,7 @@ public class AdminController implements Initializable {
         });
 
         btnCreateRes.setOnAction((ActionEvent e) -> {
-            if (residentAllFieldsfilled() && validateInput("navn", resName.getText(), 255) && validateInput("telefonnummer", resPhone.getText(), 255) && validateInput("email", resEmail.getText(), 255)) {
+            if (residentAllFieldsfilled() && validateInput("Navn", resName.getText(), 255) && validateInput("Telefonnummer", resPhone.getText(), 255) && validateInput("E-mail", resEmail.getText(), 255)) {
                 try {
                     Ward tempWard = (Ward) residentWardCB.getSelectionModel().getSelectedItem();
                     facade.newResident(tempWard.getWardNumber(), resName.getText(), resPhone.getText(), resEmail.getText(), resImage,resCPR.getText());
@@ -103,12 +107,11 @@ public class AdminController implements Initializable {
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } else {
             }
         });
 
         btnCreateUser.setOnAction((ActionEvent e) -> {
-            if (userAllFieldsfilled() && validateInput("Brugernavn",userName.getText(), 255) && validateInput("email", userEmail.getText(), 255) && validateInput("telefonnummer", userPhone.getText(), 255 ) && validatePass(userPass.getText())) {
+            if (userAllFieldsfilled() && validateInput("Brugernavn",userName.getText(), 255) && validateInput("E-mail", userEmail.getText(), 255) && validateInput("Telefonnummer", userPhone.getText(), 255 ) && validatePass(userPass.getText())) {
                 try {
                     Ward temp = (Ward) userWardCB.getSelectionModel().getSelectedItem();
                     facade.newUser(temp.getWardNumber()
@@ -127,7 +130,6 @@ public class AdminController implements Initializable {
                 } catch (SQLException ex) {
                     Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (FileNotFoundException ex){
-                    
                 }
             }
         });
@@ -139,7 +141,12 @@ public class AdminController implements Initializable {
         resSelectPic.setOnAction((ActionEvent e) -> {
             resImage = openFileSelector();
         });
-
+        toMainTab.setGraphic(new Button("Til hovedsiden"));
+        ((Button) toMainTab.getGraphic()).setOnAction(e -> {
+            try {
+                Main.showMain(this.facade);
+            } catch (IOException ex) {}
+        });
     }
 
     private File openFileSelector() {
@@ -148,15 +155,15 @@ public class AdminController implements Initializable {
         return fc.showOpenDialog(null);
     }
     
-        private boolean validatePass(String input){
-        if (!PassChecker.checkPassword(input)){
-            showDialog("fejl ved oprettelse ", "Kodeordet skal minimum indeholde ét stort tegn, ét lille tegn, ét tal og være 8 cifre langt");
-        }
-        return true;
+    private boolean validatePass(String input){
+    if (!PassChecker.checkPassword(input)){
+        showDialog("fejl ved oprettelse ", "Kodeordet skal minimum indeholde ét stort tegn, ét lille tegn, ét tal og være 8 cifre langt");
+    }
+    return true;
         
     }
         
-    private boolean validateInput(String inputName,String input, int length){
+    private boolean validateInput(String inputName, String input, int length){
         if (input.length() > length){
             showDialog("Fejl ved oprettelse", inputName + " er for langt, det skal fylde mindre end " + length + " tegn ");
         }
@@ -180,7 +187,8 @@ public class AdminController implements Initializable {
     }
 
     private boolean residentAllFieldsfilled() {
-        return residentWardCB.getSelectionModel().getSelectedItem() != null && resImage != null &&!resName.getText().isEmpty() && !resPhone.getText().isEmpty() && !resEmail.getText().isEmpty();
+        return residentWardCB.getSelectionModel().getSelectedItem() != null 
+                && resImage != null &&!resName.getText().isEmpty() && !resPhone.getText().isEmpty() && !resEmail.getText().isEmpty();
     }
     
     private void residenceCreated(){
@@ -217,10 +225,9 @@ public class AdminController implements Initializable {
 
     public void setFacade(Facade f) {
         this.facade = f;
-        System.out.println(this.facade);
     }
     
-     private void showDialog(String titel, String dialog){
+    private void showDialog(String titel, String dialog){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titel);
         alert.setContentText(dialog);

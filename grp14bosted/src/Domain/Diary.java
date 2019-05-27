@@ -1,18 +1,26 @@
 package Domain;
 
 import java.util.Date;
-import java.util.UUID;
 
 public class Diary {
 
-    String topic, text;
-    UUID authorID, residentID, lastID;
-    Date date;
+    private String topic, text;
+    private Date date;
 
     public Diary(String topic, String text, Date date) {
         this.topic = topic;
         this.text = text;
         this.date = date;
+    }
+    
+    public Date getDate(){
+        return this.date;
+    }
+    public String getText(){
+        return this.text;
+    }
+    public String getTopic(){
+        return this.topic;
     }
     
     @Override

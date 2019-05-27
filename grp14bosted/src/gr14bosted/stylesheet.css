@@ -42,3 +42,17 @@
 #login{
     -fx-text-fill: -style1-lt;
 }
+#toMainTab {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+.label, .check-box{
+    -fx-text-fill: #ffffff;
+}
+.choice-box .label{
+    -fx-text-fill: #000000;
+}
+#diaryLabel{
+    -fx-text-fill: #000000;
+}
+
