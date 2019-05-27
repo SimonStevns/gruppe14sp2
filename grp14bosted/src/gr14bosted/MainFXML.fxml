@@ -52,8 +52,12 @@
                            </children></Pane>
                         <Pane fx:id="paneRead" visible="false">
                            <children>
-                              <Label text="Read Diary Temp Label" />
-                              <ListView fx:id="diariesLV" prefHeight="600.0" prefWidth="446.0" />
+                              <Label fx:id="diaryLabel" layoutX="3.0" layoutY="4.0" prefHeight="25.0" prefWidth="71.0" text="Dagbøger">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font></Label>
+                              <ListView fx:id="diariesLV" layoutY="33.0" prefHeight="539.0" prefWidth="446.0" />
+                              <Button fx:id="diariesReadFull" layoutY="573.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="446.0" text="Læs hele dagbogen" />
                            </children>
                         </Pane>
                         <Pane fx:id="paneDiary">

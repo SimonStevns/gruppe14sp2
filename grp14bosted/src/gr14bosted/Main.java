@@ -1,10 +1,7 @@
 package gr14bosted;
 
 import Domain.Facade;
-import Domain.User;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -62,7 +59,4 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();    
     }
-    
-    
-
 }
