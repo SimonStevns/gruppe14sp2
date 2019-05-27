@@ -45,7 +45,7 @@ public class AdminController implements Initializable {
     
     private ObservableList<Ward> userWards, residentWards = FXCollections.observableArrayList();
     private ObservableList<Residence> residences = FXCollections.observableArrayList();
-    
+
     private File userImage, resImage = null;
 
     private Facade facade = new Facade();
@@ -74,7 +74,7 @@ public class AdminController implements Initializable {
             cb.setItems(residences);
             cb.getSelectionModel().selectFirst();
         }
-        
+
         userWards = facade.getWards(residences.get(0).getId().toString());
         residentWards = facade.getWards(residences.get(0).getId().toString());
         userWardCB.setItems(userWards);
@@ -100,7 +100,7 @@ public class AdminController implements Initializable {
             if (residentAllFieldsfilled() && validateInput("Navn", resName.getText(), 255) && validateInput("Telefonnummer", resPhone.getText(), 255) && validateInput("E-mail", resEmail.getText(), 255)) {
                 try {
                     Ward tempWard = (Ward) residentWardCB.getSelectionModel().getSelectedItem();
-                    facade.newResident(tempWard.getWardNumber(), resName.getText(), resPhone.getText(), resEmail.getText(), resImage,resCPR.getText());
+                    facade.newResident(tempWard.getWardNumber(), resName.getText(), resPhone.getText(), resEmail.getText(), resImage, resCPR.getText());
                     residentCreated();
                 } catch (SQLException ex) {
                     Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
@@ -114,18 +114,18 @@ public class AdminController implements Initializable {
             if (userAllFieldsfilled() && validateInput("Brugernavn",userName.getText(), 255) && validateInput("E-mail", userEmail.getText(), 255) && validateInput("Telefonnummer", userPhone.getText(), 255 ) && validatePass(userPass.getText())) {
                 try {
                     Ward temp = (Ward) userWardCB.getSelectionModel().getSelectedItem();
-                    facade.newUser(temp.getWardNumber()
-                            , userName.getText()
-                            , userPass.getText()
-                            , userEmail.getText()
-                            , userPhone.getText()
-                            , userImage
-                            , privOwn.isSelected()
-                            , privAll.isSelected()
-                            , privFind.isSelected()
-                            , privWrite.isSelected()
-                            , privDrugs.isSelected()
-                            , privAdmin.isSelected());
+                    facade.newUser(temp.getWardNumber(),
+                             userName.getText(),
+                             userPass.getText(),
+                             userEmail.getText(),
+                             userPhone.getText(),
+                             userImage,
+                             privOwn.isSelected(),
+                             privAll.isSelected(),
+                             privFind.isSelected(),
+                             privWrite.isSelected(),
+                             privDrugs.isSelected(),
+                             privAdmin.isSelected());
                     userCreated();
                 } catch (SQLException ex) {
                     Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
@@ -137,7 +137,7 @@ public class AdminController implements Initializable {
         userSelectPic.setOnAction((ActionEvent e) -> {
             userImage = openFileSelector();
         });
-        
+
         resSelectPic.setOnAction((ActionEvent e) -> {
             resImage = openFileSelector();
         });
@@ -154,7 +154,6 @@ public class AdminController implements Initializable {
         fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter(".jpg", "*.jpg"));
         return fc.showOpenDialog(null);
     }
-    
     private boolean validatePass(String input){
     if (!PassChecker.checkPassword(input)){
         showDialog("fejl ved oprettelse ", "Kodeordet skal minimum indeholde ét stort tegn, ét lille tegn, ét tal og være 8 cifre langt");
@@ -169,7 +168,7 @@ public class AdminController implements Initializable {
             showDialog("Fejl ved oprettelse", inputName + " er for langt, det skal fylde mindre end " + length + " tegn ");
         }
         return input.length() <= length;
-        
+
     }
 
     private boolean wardAllFieldsfilled() {
@@ -188,23 +187,24 @@ public class AdminController implements Initializable {
     }
 
     private boolean residentAllFieldsfilled() {
+
         return residentWardCB.getSelectionModel().getSelectedItem() != null 
                 && resImage != null &&!resName.getText().isEmpty() && !resPhone.getText().isEmpty() && !resEmail.getText().isEmpty();
     }
-    
-    private void residenceCreated(){
+
+    private void residenceCreated() {
         residenceName.clear();
         residenceAddress.clear();
         residencePhone.clear();
         residenceEmail.clear();
     }
-    
-    private void wardCreated(){
+
+    private void wardCreated() {
         wardDescription.clear();
         wardName.clear();
     }
-    
-    private void userCreated(){
+
+    private void userCreated() {
         userEmail.clear();
         userName.clear();
         userPass.clear();
@@ -215,8 +215,8 @@ public class AdminController implements Initializable {
             cb.setSelected(false);
         }
     }
-    
-    private void residentCreated(){
+
+    private void residentCreated() {
         resEmail.clear();
         resName.clear();
         resPhone.clear();
@@ -227,7 +227,6 @@ public class AdminController implements Initializable {
     public void setFacade(Facade f) {
         this.facade = f;
     }
-    
     private void showDialog(String titel, String dialog){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titel);

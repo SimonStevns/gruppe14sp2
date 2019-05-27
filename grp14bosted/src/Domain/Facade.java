@@ -29,17 +29,17 @@ public class Facade {
     public void newResident(UUID wardID, String name, String phone, String email, File pic, String cpr) throws SQLException, FileNotFoundException {
         bostedCon.openConnection();
 
-        PreparedStatement pstmt = bostedCon.getPreparedstmt("INSERT INTO `residents` (`residentID`, `name`, `email`, `phone`, `picture`, `cpr`) VALUES (?, ?, ?, ?, ?, ?);");
+        PreparedStatement pstmt = bostedCon.getPreparedstmt("INSERT INTO `residents` (`residentID`, `cpr`, `name`, `email`, `phone`, `picture`) VALUES (?, ?, ?, ?, ?, ?);");
         
         String residentID = UUID.randomUUID().toString();
         FileInputStream fis = new FileInputStream(pic);
         
         pstmt.setString(1, residentID);
-        pstmt.setString(2, name);
-        pstmt.setString(3, email);
-        pstmt.setString(4, phone);
-        pstmt.setBlob(5, fis, pic.length());
-        pstmt.setString(6, cpr);
+        pstmt.setString(2, cpr);
+        pstmt.setString(3, name);
+        pstmt.setString(4, email);
+        pstmt.setString(5, phone);
+        pstmt.setBlob(6, fis, pic.length());
         pstmt.executeUpdate();
         pstmt.close();
 
