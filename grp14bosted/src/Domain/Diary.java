@@ -17,6 +17,6 @@ public class Diary {
     
     @Override
     public String toString(){
-        return this.topic + " Dato:  " + date.toString();
+        return this.topic + " : Dato:  " + date.toString()+" "+this.text;
     }
 }

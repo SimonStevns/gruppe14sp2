@@ -43,7 +43,8 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 public class MainFXMLController implements Initializable {
-
+    @FXML
+    private Label residenceL;
     @FXML
     private Pane paneDiary, paneWrite, paneRead, paneMedicine;
     @FXML
@@ -69,7 +70,7 @@ public class MainFXMLController implements Initializable {
 
     private ObservableList<Resident> residents, residentsSearch;
   
-    private ObservableList<Diary> diarys;
+    private ObservableList<Diary> diaries;
     private ObservableList<Prescription> prescriptions = FXCollections.observableArrayList();
     
     private HashMap<CheckBox, Prescription> prescriptionCb = new HashMap();
@@ -222,8 +223,8 @@ public class MainFXMLController implements Initializable {
             }
         });
 
-        diarys = FXCollections.observableArrayList();
-        diariesLV.setItems(diarys);
+        diaries = FXCollections.observableArrayList();
+        diariesLV.setItems(diaries);
 
         diaryDate.setValue(LocalDate.now());
         diaryDate.setShowWeekNumbers(true);
