@@ -41,7 +41,8 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 public class MainFXMLController implements Initializable {
-
+    @FXML
+    private Label residenceL;
     @FXML
     private Pane paneDiary, paneWrite, paneRead, paneMedicine;
     @FXML
