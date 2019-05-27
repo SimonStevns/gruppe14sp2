@@ -158,6 +158,7 @@ public class AdminController implements Initializable {
     private boolean validatePass(String input){
     if (!PassChecker.checkPassword(input)){
         showDialog("fejl ved oprettelse ", "Kodeordet skal minimum indeholde ét stort tegn, ét lille tegn, ét tal og være 8 cifre langt");
+        return false;
     }
     return true;
         
