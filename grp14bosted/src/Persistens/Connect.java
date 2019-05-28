@@ -21,7 +21,7 @@ public class Connect {
         this.JDBC_DRIVER = "com.mysql.jdbc.Driver";
         this.URL = url;
         this.USER = username;
-        this.PASS = "";
+        this.PASS = password;
         this.conn = null;
     }
 

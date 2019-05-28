@@ -5,12 +5,15 @@ import Domain.Facade;
 import Domain.Prescription;
 import Domain.Privilege;
 import Domain.Resident;
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
@@ -46,7 +49,7 @@ public class MainFXMLController implements Initializable {
     @FXML
     private Pane paneDiary, paneWrite, paneRead, paneMedicine;
     @FXML
-    private Button buttonWard, buttonMedicine, buttonWrite, buttonRead, buttonSubmit, prescriptionBtn, diariesReadFull;
+    private Button buttonWard, buttonMedicine, buttonWrite, buttonRead, buttonSubmit, prescriptionBtn, diariesReadFull, buttonLogOut;
     @FXML
     private AnchorPane wardMenu;
     @FXML
@@ -90,6 +93,17 @@ public class MainFXMLController implements Initializable {
         if (facade.hasPrivlege(Privilege.FINDJOURNAL)) {
             journalTA.setVisible(true);
         }
+        
+        buttonLogOut.setOnAction(e->{
+            
+            facade.logOut();
+            try {
+                Main.showLogin();
+            } catch (IOException ex) {
+                Logger.getLogger(MainFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        
         residents = facade.getCurrentResidents();
         residentsSearch = facade.getCurrentResidents();
         residentsLV.setCellFactory(residentListView -> new ListCell<Resident>(){

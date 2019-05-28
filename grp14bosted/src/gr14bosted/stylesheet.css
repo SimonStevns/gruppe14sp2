@@ -46,13 +46,13 @@
     -fx-background-color: transparent;
     -fx-padding: 0;
 }
-.label, .check-box{
+.check-box{
     -fx-text-fill: #ffffff;
 }
-.choice-box .label{
+.choice-box .label, #diaryLabel{
     -fx-text-fill: #000000;
 }
-#diaryLabel{
-    -fx-text-fill: #000000;
+.label-text{
+    -fx-text-fill: #ffffff;
 }
 

@@ -402,6 +402,10 @@ public class Facade {
         }
         return null;
     }
+    public void logOut(){
+        currentUser = null;
+        currentWardID = null;
+    }
     
     private void log (String activity){
         try {
