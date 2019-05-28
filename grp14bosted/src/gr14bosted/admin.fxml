@@ -9,7 +9,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" stylesheets="@stylesheet.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr14bosted.AdminController">
+<TabPane fx:id="admin" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" styleClass="admin" stylesheets="@stylesheet.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr14bosted.AdminController">
   <tabs>
       <Tab text="Nyt bosted">
         <content>
@@ -18,11 +18,11 @@
                   <TextField fx:id="residenceName" layoutX="150.0" layoutY="99.0" prefHeight="25.0" prefWidth="300.0" />
                   <TextField fx:id="residenceAddress" layoutX="150.0" layoutY="124.0" prefHeight="25.0" prefWidth="300.0" />
                   <TextField fx:id="residencePhone" layoutX="150.0" layoutY="149.0" prefHeight="25.0" prefWidth="300.0" />
-                  <Label layoutX="109.0" layoutY="103.0" text="Navn" />
                   <TextField fx:id="residenceEmail" layoutX="150.0" layoutY="174.0" prefHeight="25.0" prefWidth="300.0" />
-                  <Label layoutX="93.0" layoutY="128.0" text="Adresse" />
-                  <Label layoutX="103.0" layoutY="153.0" text="Telefon" />
-                  <Label layoutX="106.0" layoutY="178.0" text="E-mail" />
+                  <Label layoutX="109.0" layoutY="103.0" styleClass="label-text" text="Navn" />
+                  <Label layoutX="93.0" layoutY="128.0" styleClass="label-text" text="Adresse" />
+                  <Label layoutX="103.0" layoutY="153.0" styleClass="label-text" text="Telefon" />
+                  <Label layoutX="106.0" layoutY="178.0" styleClass="label-text" text="E-mail" />
                   <Button fx:id="btnCreateResidence" layoutX="257.0" layoutY="261.0" mnemonicParsing="false" text="Opret bosted" />
                </children>
             </AnchorPane>
@@ -35,9 +35,9 @@
                   <ChoiceBox fx:id="wardCB" layoutX="174.0" layoutY="44.0" prefWidth="300.0" />
                   <TextField fx:id="wardName" layoutX="174.0" layoutY="138.0" prefWidth="300.0" />
                   <TextField fx:id="wardDescription" layoutX="174.0" layoutY="163.0" prefWidth="300.0" />
-                  <Label layoutX="35.0" layoutY="48.0" text="Vælg tilhørende bosted" />
-                  <Label layoutX="132.0" layoutY="142.0" text="Navn" />
-                  <Label layoutX="103.0" layoutY="167.0" text="Beskrivelse" />
+                  <Label layoutX="35.0" layoutY="48.0" styleClass="label-text" text="Vælg tilhørende bosted" />
+                  <Label layoutX="132.0" layoutY="142.0" styleClass="label-text" text="Navn" />
+                  <Label layoutX="103.0" layoutY="167.0" styleClass="label-text" text="Beskrivelse" />
                   <Button fx:id="btnCreateWard" layoutX="252.0" layoutY="261.0" mnemonicParsing="false" text="Opret afdelling" />
                </children>
             </AnchorPane>
@@ -51,12 +51,12 @@
                   <TextField fx:id="userEmail" layoutX="170.0" layoutY="140.0" prefWidth="300.0" />
                   <TextField fx:id="userPhone" layoutX="170.0" layoutY="165.0" prefWidth="300.0" />
                   <TextField fx:id="userPass" layoutX="170.0" layoutY="190.0" prefWidth="300.0" />
-                  <Label layoutX="134.0" layoutY="119.0" text="Navn" />
-                  <Label layoutX="97.0" layoutY="24.0" text="Vælg bosted" />
-                  <Label layoutX="86.0" layoutY="68.0" text="Vælg afdeling" />
-                  <Label layoutX="131.0" layoutY="144.0" text="E-mail" />
-                  <Label layoutX="77.0" layoutY="169.0" text="Telefonnummer" />
-                  <Label layoutX="119.0" layoutY="194.0" text="Kodeord" />
+                  <Label layoutX="134.0" layoutY="119.0" styleClass="label-text" text="Navn" />
+                  <Label layoutX="97.0" layoutY="24.0" styleClass="label-text" text="Vælg bosted" />
+                  <Label layoutX="86.0" layoutY="68.0" styleClass="label-text" text="Vælg afdeling" />
+                  <Label layoutX="131.0" layoutY="144.0" styleClass="label-text" text="E-mail" />
+                  <Label layoutX="77.0" layoutY="169.0" styleClass="label-text" text="Telefonnummer" />
+                  <Label layoutX="119.0" layoutY="194.0" styleClass="label-text" text="Kodeord" />
                   <Button fx:id="userSelectPic" layoutX="172.0" layoutY="238.0" mnemonicParsing="false" prefWidth="300.0" text="Vælg billede" />
                   <Label layoutX="173.0" layoutY="275.0" prefHeight="17.0" prefWidth="301.0" text="________________________Privileger________________________" />
                   <CheckBox fx:id="privOwn" layoutX="170.0" layoutY="307.0" mnemonicParsing="false" text="Vis egne patienters dagbog" />
@@ -79,16 +79,16 @@
                   <TextField fx:id="resEmail" layoutX="183.0" layoutY="199.0" prefHeight="25.0" prefWidth="300.0" />
                   <TextField fx:id="resPhone" layoutX="183.0" layoutY="224.0" prefHeight="25.0" prefWidth="300.0" />
                   <TextField fx:id="resCPR" layoutX="183.0" layoutY="249.0" prefHeight="25.0" prefWidth="300.0" />
-                  <Label layoutX="120.0" layoutY="178.0" text="Navn" />
-                  <Label layoutX="117.0" layoutY="228.0" text="Telefon" />
-                  <Label layoutX="120.0" layoutY="203.0" text="E-mail" />
-                  <Label layoutX="120.0" layoutY="253.0" text="CPR nr." />
+                  <Label layoutX="120.0" layoutY="178.0" styleClass="label-text" text="Navn" />
+                  <Label layoutX="117.0" layoutY="228.0" styleClass="label-text" text="Telefon" />
+                  <Label layoutX="120.0" layoutY="203.0" styleClass="label-text" text="E-mail" />
+                  <Label layoutX="120.0" layoutY="253.0" styleClass="label-text" text="CPR nr." />
                   <Button fx:id="resSelectPic" layoutX="183.0" layoutY="292.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="300.0" text="Vælg billede" />
                   <Button fx:id="btnCreateRes" layoutX="183.0" layoutY="338.0" mnemonicParsing="false" text="Opret bruger" />
                   <ChoiceBox fx:id="residentResidenceCB" layoutX="183.0" layoutY="32.0" prefWidth="300.0" />
                   <ChoiceBox fx:id="residentWardCB" layoutX="183.0" layoutY="81.0" prefWidth="300.0" />
-                  <Label layoutX="88.0" layoutY="36.0" text="Vælg bosted" />
-                  <Label layoutX="85.0" layoutY="85.0" text="Vælg afdeling" />
+                  <Label layoutX="88.0" layoutY="36.0" styleClass="label-text" text="Vælg bosted" />
+                  <Label layoutX="85.0" layoutY="85.0" styleClass="label-text" text="Vælg afdeling" />
                </children></AnchorPane>
       </content>
     </Tab>
